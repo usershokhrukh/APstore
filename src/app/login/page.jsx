@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react";
 import "./login.modules.scss";
 import Image from "next/image";
@@ -10,6 +12,7 @@ const Login = () => {
           src={"/images/login/background-login.jpg"}
           className="login__bg"
           fill
+          alt="Failed image"
         />
       </span>
 
@@ -35,7 +38,7 @@ const Login = () => {
         </div>
         <div className="login__form-box">
           <input
-            type="text"
+            type="password"
             id="password"
             name="password"
             placeholder="Password"
@@ -49,7 +52,7 @@ const Login = () => {
           <input type="checkbox" className="login__check" />
           <p className="login__subtext">Remember me</p>
         </div>
-        <button>Login</button>
+        <button className="login__submit">Login</button>
       </form>
     </div>
   );
