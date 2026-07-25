@@ -1,0 +1,9 @@
+@mixin display() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin inter {
+  font-family: "Inter";
+}
