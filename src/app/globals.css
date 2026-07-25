@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "../style/var.scss";
 
 /* inter-300 - latin */
 @font-face {
