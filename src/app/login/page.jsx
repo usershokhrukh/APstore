@@ -1,10 +1,34 @@
-"use client"
-
-import React from "react";
+"use client";
+import React, {useEffect, useState} from "react";
 import "./login.modules.scss";
 import Image from "next/image";
+import {PostLogin} from "@/hooks/login/PostLogin";
 
 const Login = () => {
+  const [input, setInput] = useState({
+    username: "",
+    password: "",
+  });
+
+  const [remember, setRemember] = useState(false);
+
+  const [passShow, setPassShow] = useState(false);
+  const {mutate, data} = PostLogin();
+  const handleChange = (e) => {
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value.trim(),
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!input.password || !input.password) return;
+    mutate(input);
+  };
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
   return (
     <div className="login">
       <span className="login__fix-span">
@@ -16,10 +40,11 @@ const Login = () => {
         />
       </span>
 
-      <form className="login__form">
+      <form onSubmit={handleSubmit} className="login__form">
         <h1 className="login__title">Login</h1>
         <div className="login__form-box">
           <input
+            onChange={handleChange}
             type="text"
             id="username"
             name="username"
@@ -38,21 +63,43 @@ const Login = () => {
         </div>
         <div className="login__form-box">
           <input
-            type="password"
+            onChange={handleChange}
+            type={`${passShow ? "text" : "password"}`}
             id="password"
             name="password"
             placeholder="Password"
             className="login__inputs"
           />
-          <label htmlFor="password" className="login__label">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 10H20C20.5523 10 21 10.4477 21 11V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V11C3 10.4477 3.44772 10 4 10H5V9C5 5.13401 8.13401 2 12 2C15.866 2 19 5.13401 19 9V10ZM17 10V9C17 6.23858 14.7614 4 12 4C9.23858 4 7 6.23858 7 9V10H17ZM11 14V18H13V14H11Z"></path></svg>
+          <label
+            onClick={() => {
+              setPassShow(!passShow);
+            }}
+            htmlFor="password"
+            className="login__label"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M19 10H20C20.5523 10 21 10.4477 21 11V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V11C3 10.4477 3.44772 10 4 10H5V9C5 5.13401 8.13401 2 12 2C15.866 2 19 5.13401 19 9V10ZM17 10V9C17 6.23858 14.7614 4 12 4C9.23858 4 7 6.23858 7 9V10H17ZM11 14V18H13V14H11Z"></path>
+            </svg>
           </label>
         </div>
         <div className="login__box">
-          <input type="checkbox" className="login__check" />
+          <input
+            checked={remember}
+            onClick={() => {
+              setRemember(!remember);
+            }}
+            type="checkbox"
+            className="login__check"
+          />
           <p className="login__subtext">Remember me</p>
         </div>
-        <button className="login__submit">Login</button>
+        <button type="submit" className="login__submit">
+          Login
+        </button>
       </form>
     </div>
   );

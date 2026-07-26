@@ -4,8 +4,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 const { default: axios } = require("axios")
 
 const request = async (data) => {
-  const api = process.env.API_KEY;
-  const res = await axios.post(`${api}auth/login`, data)
+  const api = process.env.NEXT_PUBLIC_API_KEY;  
+  const res = await axios.post(`${api}/api/v1/auth/login`, data)
   return res;
 }
 
