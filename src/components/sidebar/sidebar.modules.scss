@@ -1,1 +1,85 @@
 @use "../../style/mixin.scss" as *;
+
+.sidebar {
+  width: 260px;
+  background-color: #f8f9fa;
+  @include inter();
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  height: 100vh;
+  box-sizing: border-box;
+
+  &__top {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+  }
+
+  &__title {
+    font-weight: 500;
+    font-size: 28px;
+    color: #1a202c;
+  }
+
+  &__p {
+    font-size: 15px;
+    color: #a0aec0;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    &:hover {
+      background-color: #edf2f7;
+      color: #1a202c;
+    }
+  }
+
+  &__dropdown {
+    width: 100%;
+  }
+
+  &__btn {
+    font-size: 16px;
+    color: #4a5568;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+
+    &:hover {
+      background-color: #edf2f7;
+      color: #1a202c;
+    }
+  }
+
+  &__link {
+    color: #4a5568;
+    display: block;
+    padding: 5px;
+    border-radius: 5px;
+
+    &:hover {
+      color: black;
+      background-color: #edf2f7;
+    }
+  }
+  &__drop {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-left: 30px;
+  }
+}
