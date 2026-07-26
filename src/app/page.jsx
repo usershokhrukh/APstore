@@ -4,13 +4,12 @@ import Header from "@/components/header/Header";
 import Sidebar from "@/components/sidebar/Sidebar";
 import Dashboard from "./dashboard/page";
 
-
 const Page = () => {
   return (
     <div className="page">
-      <Header />
+      <Sidebar />
       <main className="page__main">
-        <Sidebar />
+        <Header />
         <Dashboard />
       </main>
     </div>
