@@ -4,7 +4,7 @@ import "./login.modules.scss";
 import Image from "next/image";
 import {PostLogin} from "@/hooks/login/PostLogin";
 import SendNotification, {useNotify} from "@/hooks/useNotify";
-import { useRouter } from "next/navigation";
+import {useRouter} from "next/navigation";
 import axios from "axios";
 
 const LoginForm = () => {
@@ -34,31 +34,34 @@ const LoginForm = () => {
   };
 
   useEffect(() => {
-    if (error?.message) {      
+    if (error?.message) {
       notice("Could not resolve!", "error");
       console.log(error?.message);
     }
   }, [error]);
 
   const handleTokens = async ({accessToken, refreshToken}) => {
-    const cookieResponse = await axios.post("/api/auth/login", {accessToken, refreshToken})
+    const cookieResponse = await axios.post("/api/auth/login", {
+      accessToken,
+      refreshToken,
+    });
     console.log(cookieResponse);
-    
-    if(cookieResponse?.data?.success) {
-      router.replace("/")
-    } 
-  }
+
+    if (cookieResponse?.data?.success) {
+      router.replace("/");
+    }
+  };
 
   useEffect(() => {
     if (data) {
       if (data?.data?.user?.role === "admin") {
-        notice("Admin has found!", "success")
+        notice("Admin has found!", "success");
         const {accessToken, refreshToken} = data?.data;
-        handleTokens({accessToken, refreshToken})
-      }else {
+        handleTokens({accessToken, refreshToken});
+      } else {
         console.log(data);
-        
-        notice("Could not find the admin!", "error")
+
+        notice("Could not find the admin!", "error");
       }
     }
   }, [data]);
@@ -71,6 +74,8 @@ const LoginForm = () => {
           className="login__bg"
           fill
           alt="Failed image"
+          priority
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1920px"
         />
       </span>
 
