@@ -28,15 +28,15 @@ const LoginForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!input.password || !input.password) {
-      return notice("Fill all inputs", "error");
+      return notice("Fill all inputs", "error", 2000, false);
     }
-    notice("Pending...", "info");
+    notice("Pending...", "info", "infinite", false);
     mutate(input);
   };
 
   useEffect(() => {
     if (error?.message) {
-      notice("Could not resolve!", "error");
+      notice("Could not resolve!", "error", 3000, false);
       console.log(error?.message);
     }
   }, [error]);
@@ -56,13 +56,13 @@ const LoginForm = () => {
   useEffect(() => {
     if (data) {
       if (data?.data?.user?.role === "admin") {
-        notice("Admin has found!", "success");
+        notice("Admin has found!", "success", 2000, false);
         const {accessToken, refreshToken} = data?.data;
         handleTokens({accessToken, refreshToken});
       } else {
         console.log(data);
 
-        notice("Could not find the admin!", "error");
+        notice("Could not find the admin!", "error", 5000, true);
       }
     }
   }, [data]);

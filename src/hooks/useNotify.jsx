@@ -2,9 +2,9 @@ import {ErrorContext} from "@/context/ErrorContext";
 import {useContext} from "react";
 
 export const useNotify = () => {
-  const [setError, setNoticeSVG] = useContext(ErrorContext);
+  const [setError, setNoticeSVG, setErrorTime] = useContext(ErrorContext);
 
-  const notice = (text, status) => {
+  const notice = (text, status, time, close) => {
     if (status == "info") {
       setNoticeSVG(
         <svg
@@ -41,6 +41,8 @@ export const useNotify = () => {
     }
     setError({
       text,
+      timeout: time || 5000,
+      close: close ? true : false
     });
   };
 
