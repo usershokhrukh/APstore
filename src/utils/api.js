@@ -1,36 +1,31 @@
-  import axios from "axios";
+import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "/",
+  baseURL: "https://api.magnateshop.uz",
 });
 
-api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  async (error) => {
-    const originalRequest = error.config;
-    if (error.response?.status === 400 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      try {
-        await axios.post("/api/auth/refresh");
-        
-        return api(originalRequest);
-      } catch (refreshError) {
-        if (typeof window !== "undefined") {
-          window.location.href = "/login";
-        }
-        return Promise.reject(refreshError);
-      }
+api.interceptors.request.use(
+  async (config) => {
+    if(config?._isPublic) {
+      return config
     }
-    if (error.response?.status === 400 && originalRequest.url === "/api/auth/refresh") {
-      if (typeof window !== "undefined") {
-        window.location.href = "/login";
-      }
-      return Promise.reject(error);
-    }
+    try {
+      const check = await axios.post("/api/auth/refresh");   
+      const accessToken = check?.data?.accessToken;
 
+      if(accessToken) {
+        config.headers["Authorization"] = `Bearer ${accessToken}`
+      }
+      
+      return config; 
+    } catch (err) {
+      const cancelSource = axios.CancelToken.source();
+      config.cancelToken = cancelSource.token;
+      cancelSource.cancel("Unauthorized: Missing or invalid tokens.");
+      return config;
+    }
+  }, 
+  (error) => {
     return Promise.reject(error);
   }
 );
