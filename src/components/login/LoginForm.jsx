@@ -6,6 +6,7 @@ import {PostLogin} from "@/hooks/login/PostLogin";
 import SendNotification, {useNotify} from "@/hooks/useNotify";
 import {useRouter} from "next/navigation";
 import axios from "axios";
+import loginBgImg from "../../../public/images/login/background-login.jpg";
 
 const LoginForm = () => {
   const [input, setInput] = useState({
@@ -70,13 +71,11 @@ const LoginForm = () => {
     <div className="login">
       <span className="login__fix-span">
         <Image
-          src={"/images/login/background-login.jpg"}
-          className="login__bg"
+          src={loginBgImg}
+          alt="Login Background"
           fill
-          alt="Failed image"
           priority
-          unoptimized
-          quality={100}
+          className="login__bg"
         />
       </span>
 
