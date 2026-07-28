@@ -15,10 +15,12 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    @include inter();
     width: 100%;
   }
 
   &__text {
+    @include inter();
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -27,13 +29,29 @@
 
   &__title {
     font-weight: 500;
+    @include inter();
     font-size: 28px;
     color: #1a202c;
   }
-
+  &__bottom{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    padding: 5px 0;
+    border-radius: 3px;
+    background-color: #f8f9fa;
+  }
+  &__img{
+    width: 80px;
+    height: 80px;
+    border-radius: 50px;
+  }
   &__p {
-    font-size: 15px;
-    color: #a0aec0;
+    font-size: 16px;
+    color: #4a5568;
+
     display: block;
     width: 100%;
     padding: 10px;
@@ -77,9 +95,11 @@
     }
   }
   &__drop {
+    border-left: 2px solid #d0d7dd;
     display: flex;
     flex-direction: column;
     gap: 5px;
-    margin-left: 30px;
+    padding: 10px;
+    margin-left: 10px;
   }
 }
