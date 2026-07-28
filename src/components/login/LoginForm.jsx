@@ -75,8 +75,8 @@ const LoginForm = () => {
           fill
           alt="Failed image"
           priority
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1920px"
           unoptimized
+          quality={100}
         />
       </span>
 
