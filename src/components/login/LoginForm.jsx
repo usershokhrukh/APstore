@@ -24,7 +24,7 @@ const LoginForm = () => {
       [e.target.name]: e.target.value.trim(),
     });
   };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!input.password || !input.password) {
@@ -36,8 +36,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (error?.message) {
-      notice("Could not resolve!", "error", 3000, false);
-      console.log(error?.message);
+      notice(`${error?.message}`, "error", 3000, false);
     }
   }, [error]);
 
@@ -46,8 +45,6 @@ const LoginForm = () => {
       accessToken,
       refreshToken,
     });
-    console.log(cookieResponse);
-
     if (cookieResponse?.data?.success) {
       router.replace("/");
     }
@@ -56,12 +53,10 @@ const LoginForm = () => {
   useEffect(() => {
     if (data) {
       if (data?.data?.user?.role === "admin") {
-        notice("Admin has found!", "success", 2000, false);
+        notice("Admin has found!", "success", "infinite", true);
         const {accessToken, refreshToken} = data?.data;
         handleTokens({accessToken, refreshToken});
       } else {
-        console.log(data);
-
         notice("Could not find the admin!", "error", 5000, true);
       }
     }
