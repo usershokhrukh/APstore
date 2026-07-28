@@ -18,21 +18,23 @@ export async function POST() {
       return Response.json({error: "Failed to get token!"}, {status: 400});
     } else {
       const data = await backendResponse.data;
+      cookieStore.delete("access_token", {path: "/"});
+      cookieStore.delete("refresh_token", {path: "/api/auth/refresh"});
       cookieStore.set("access_token", data.accessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         path: "/",
-        maxAge: 15 * 60,
+        maxAge: 900,
       });
 
       cookieStore.set("refresh_token", data.refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         path: "/api/auth/refresh",
-        maxAge: 7 * 24 * 60 * 60,
+        maxAge: 900,
       });
 
-      return Response.json({success: true});
+      return Response.json({success: true, accessToken: data.accessToken});
     }
   } catch (err) {
     cookieStore.delete("access_token", {path: "/"});

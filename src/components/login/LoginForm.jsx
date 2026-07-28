@@ -45,7 +45,7 @@ const LoginForm = () => {
     console.log(cookieResponse);
     
     if(cookieResponse?.data?.success) {
-      router.replace("/dashboard")
+      router.replace("/")
     } 
   }
 
