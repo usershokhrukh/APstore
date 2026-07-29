@@ -1,8 +1,7 @@
 @use "../../style/mixin.scss" as *;
+@use "../../style/var.scss" as *;
 .header{
-  background-color: #f8f9fa;
   width: 100%;
-  border-bottom: 1px solid #ccd1dc;
   height: 80px;
   padding: 20px 50px;
   &__div{

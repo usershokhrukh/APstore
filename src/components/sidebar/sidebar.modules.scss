@@ -1,14 +1,15 @@
 @use "../../style/mixin.scss" as *;
+@use "../../style/var.scss" as *;
 
 .sidebar {
   width: 260px;
-  background-color: #f8f9fa;
+  background-color: var(--bg-main-dark);
   @include inter();
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 20px;
-  border-right: 1px solid #ccd1dc;
+  // border-right: 1px solid #ccd1dc;
   height: 100vh;
   box-sizing: border-box;
   &__top {
@@ -19,21 +20,22 @@
     width: 100%;
   }
 
-  &__text {
-    @include inter();
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    width: 100%;
+  &__p3 {
+    font-size: 12px;
+    color: #b0b7c2;
   }
-
   &__title {
-    font-weight: 500;
+    font-weight: 700;
     @include inter();
-    font-size: 28px;
-    color: #1a202c;
+    font-size: 18px;
+    color: var(--app-white);
   }
-  &__bottom{
+  &__word {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  &__bottom {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -41,25 +43,33 @@
     height: auto;
     padding: 5px 0;
     border-radius: 3px;
-    background-color: #f8f9fa;
+    background-color: var(--bg-main-dark);
   }
-  &__img{
-    width: 80px;
-    height: 80px;
-    border-radius: 50px;
+  &__img {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
   }
-  &__p {
+
+  &__text {
+    @include inter();
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+  }
+  &__d {
     font-size: 16px;
     color: #4a5568;
-
-    display: block;
     width: 100%;
-    padding: 10px;
-    border-radius: 5px;
     &:hover {
       background-color: #edf2f7;
-      color: #1a202c;
+      color: black !important;
     }
+  }
+  &__p {
+    display: block;
+    border-radius: 5px;
   }
 
   &__dropdown {
@@ -67,28 +77,65 @@
   }
 
   &__btn {
-    font-size: 16px;
-    color: #4a5568;
+    @include display();
+    font-size: 14px;
+    color: var(--cards-pop);
     display: flex;
     width: 100%;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
     padding: 10px;
     border-radius: 5px;
     border: none;
+    gap: 5px;
+    transition: all 0.3s ease;
 
     &:hover {
-      background-color: #edf2f7;
-      color: #1a202c;
+      background-color: var(--bg-main-dark-pop);
+      color: var(--app-white);
     }
   }
+  &__drop-btn {
+    justify-content: space-between;
+  }
 
+  &__btn-box {
+    @include display();
+    gap: 5px;
+  }
+  &__icon {
+    width: 20px;
+    // color: #4a5568;
+  }
+
+  &__span {
+    position: relative;
+    top: -3px;
+    width: 20px;
+    height: 20px;
+    color: var(--text-muted);
+  }
+  &__logOut {
+    @include display();
+    color: var(--cards-pop);
+    background-color: var(--bg-main-dark-pop);
+    width: 100%;
+    height: 50px;
+    gap: 5px;
+    font-weight: 600;
+    border-radius: 7px;
+    transition: all ease 0.3s;
+    &:hover {
+      background-color: var(--app-red);
+      color: var(--cards-pop);
+    }
+  }
   &__link {
-    color: #4a5568;
+    color: var(--cards-pop);
     display: block;
     padding: 5px;
     border-radius: 5px;
-
+    transition: all 0.3s ease;
     &:hover {
       color: black;
       background-color: #edf2f7;
@@ -101,5 +148,10 @@
     gap: 5px;
     padding: 10px;
     margin-left: 10px;
+  }
+  &__bottom {
+    width: 100%;
+    height: auto;
+    @include display();
   }
 }
