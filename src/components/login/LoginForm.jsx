@@ -24,7 +24,7 @@ const LoginForm = () => {
       [e.target.name]: e.target.value.trim(),
     });
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!input.password || !input.password) {
@@ -41,13 +41,19 @@ const LoginForm = () => {
   }, [error]);
 
   const handleTokens = async ({accessToken, refreshToken}) => {
-    const cookieResponse = await axios.post("/api/auth/login", {
-      accessToken,
-      refreshToken,
-    });
-    if (cookieResponse?.data?.success) {
-      router.replace("/");
-    }
+    try {
+      const cookieResponse = await axios.post("/api/auth/login", {
+        accessToken,
+        refreshToken,
+        remember,
+      });
+      const cookieActive = await axios.post("/api/cookieactive");
+      if (cookieResponse?.data?.success && cookieActive?.data?.success) {
+        router.replace("/");
+      }else {
+        notice(`${cookieResponse?.data?.error} & ${cookieActive?.data?.error}`, "error", "infinite", true)
+      }
+    } catch (error) {}
   };
 
   useEffect(() => {
