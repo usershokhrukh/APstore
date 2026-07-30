@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "../style/var.scss";
-@import "../style/mixin.scss";
+@use "../style/var.scss" as *;
+@use "../style/mixin.scss" as *;
+@use "tailwindcss";
 * {
   padding: 0;
   margin: 0;
