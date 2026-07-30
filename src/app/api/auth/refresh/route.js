@@ -4,6 +4,8 @@ import {cookies} from "next/headers";
 export async function POST() {
   const cookieStore = await cookies();
   const currentRefreshToken = cookieStore.get("refresh_token")?.value;
+  console.log(cookieStore.get("refresh_token"));
+  
 
   if (!currentRefreshToken) {
     return Response.json({error: "Session non-existent"}, {status: 401});
