@@ -83,15 +83,15 @@
   }
 
   &-error {
-    color: red;
+    color: var(--app-red);
   }
 
   &-info {
-    color: orange;
+    color: var(--app-yellow);
   }
 
   &-success {
-    color: green;
+    color: var(--app-green);
   }
 
   &-wrap {
