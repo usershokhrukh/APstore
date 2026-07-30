@@ -1,36 +1,51 @@
 // app/page.jsx (or your parent component)
-import React from "react";
+"use client"
+import React, { useEffect } from "react";
 import "./dashboard.modules.scss";
 import PieChartComponent from "@/components/charts/PieChart";
 import Table from "../users/Table";
+import { UseGetHealth } from "@/hooks/health/GetHealth";
+import { useRouter } from "next/navigation";
+import { useNotify } from "@/hooks/useNotify";
 
 export default function Dashboard() {
+  const {data: dataHealth, error} = UseGetHealth();
+  const route = useRouter();
+  const {notice} = useNotify();
   const sampleData = [
     {name: `Active Products`, value: 400},
     {name: `Inactive Products`, value: 300},
-  ];
+  ];;
+  useEffect(() => {
+    if(error?.message) {
+      notice(`${error?.message} try again later or login!`, "error", 20000, false)
+      route.push("/login")
+    }
+  }, [error])
 
   return (
     <main className="dashboard">
       <div className="dashboard__main-top">
         <div className="dashboard__left">
           <h2 className="dashboard__title">Dashboard</h2>
-          <div className="dashboard__top-boxes">
+          {
+            dataHealth ? <div className="dashboard__top-boxes">
             <span className="dashboard__tboxes-item">
               <span className="dashboard__tbox-health-title">database:</span>
-              <span className="dashboard__tbox-health-sub">up</span>
+              <span className="dashboard__tbox-health-sub">{dataHealth?.data?.database}</span>
             </span>
             <span className="dashboard__tboxes-item">
               <span className="dashboard__tbox-health-title">uptime:</span>
-              <span className="dashboard__tbox-health-sub">5364523+ sec</span>
+              <span className="dashboard__tbox-health-sub">{dataHealth?.data?.uptime}+ sec</span>
             </span>
             <span className="dashboard__tboxes-item">
               <span className="dashboard__tbox-health-title">timestamp:</span>
               <span className="dashboard__tbox-health-sub">
-                493-49304-3-43-9
+                {dataHealth?.data?.timestamp}
               </span>
             </span>
-          </div>
+          </div> : null
+}         
 
           <div className="dashboard__top-cards">
             <div className="dashboard__tcards-item">
