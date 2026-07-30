@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useNotify } from "@/hooks/useNotify";
 
 export default function Dashboard() {
-  const {data: dataHealth, error} = UseGetHealth();
+  const {data: dataHealth, error, refetch} = UseGetHealth();
   const route = useRouter();
   const {notice} = useNotify();
   const sampleData = [
@@ -20,6 +20,12 @@ export default function Dashboard() {
     if(error?.message) {
       notice(`${error?.message} try again later or login!`, "error", 20000, false)
       route.push("/login")
+    }
+  }, [error])
+
+  useEffect(() => {
+    if(error?.message) {
+      console.log(error);
     }
   }, [error])
 
@@ -46,6 +52,8 @@ export default function Dashboard() {
             </span>
           </div> : null
 }         
+
+<button onClick={() => refetch()}>try</button>
 
           <div className="dashboard__top-cards">
             <div className="dashboard__tcards-item">

@@ -1,110 +1,65 @@
-// import axios from "axios";
-
-// export const api = axios.create({
-//   baseURL: "https://api.magnateshop.uz",
-// });
-
-// let isRefreshFailed = false;
-// let activeRequestsCount = 0;
-
-// api.interceptors.request.use(
-//   async (config) => {
-//     if (config?._isPublic) {
-//       return config;
-//     }
-
-//     activeRequestsCount++;
-//     if (isRefreshFailed) {
-//       decrementRequestCount();
-
-//       const customError = new Error("Session expired");
-//       customError._isAuthFailure = true;
-//       return Promise.reject(customError);
-//     }
-//     try {
-//       const check = await axios.post("/api/auth/refresh");
-//       const accessToken = check?.data?.accessToken;
-
-//       if (accessToken) {
-//         config.headers["Authorization"] = `Bearer ${accessToken}`;
-//       }
-
-//       return config;
-//     } catch (err) {
-//       isRefreshFailed = true;
-
-//       err._isAuthFailure = true;
-//       if (err.response) {
-//         err.response._isAuthFailure = true;
-//       }
-
-//       return Promise.reject(err);
-//     }
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   },
-// );
-
-// function decrementRequestCount() {
-//   activeRequestsCount--;
-//   if (activeRequestsCount <= 0) {
-//     activeRequestsCount = 0;
-//     isRefreshFailed = false;
-//   }
-// }
-
-
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "https://magnateshop.uz",
+  baseURL: "https://api.magnateshop.uz",
 });
 
-// 🔑 TIMESTAMP TRACKER: Keeps track of exactly when a refresh failed
-let lastRefreshFailureTime = 0;
-const COOLDOWN_MS = 2000; // 2 seconds window
+let isRefreshing = false;
+let failedQueue = [];
 
-api.interceptors.request.use(
-  async (config) => {
-    if (config?._isPublic) {
-      return config;
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
     }
+  });
+  failedQueue = [];
+};
 
-    const currentTime = Date.now();
-    
-    // 🔑 SMART COOLDOWN: If a refresh failed less than 2 seconds ago, 
-    // catch parallel hooks or immediate TanStack retries and short-circuit them.
-    if (currentTime - lastRefreshFailureTime < COOLDOWN_MS) {
-      const customError = new Error("Session expired");
-      customError._isAuthFailure = true;
-      return Promise.reject(customError);
-    }
-
-    try {
-      const check = await axios.post("/api/auth/refresh");
-      const accessToken = check?.data?.accessToken;
-
-      if (accessToken) {
-        config.headers["Authorization"] = `Bearer ${accessToken}`;
+api.interceptors.response.use(
+  (response) => response, 
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response?.status === 401 && !originalRequest._retry && !originalRequest._isPublic) {
+        if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers["Authorization"] = `Bearer ${token}`;
+            return api(originalRequest);
+          })
+          .catch((err) => {
+            err._isAuthFailure = true;
+            return Promise.reject(err);
+          });
       }
+      originalRequest._retry = true;
+      isRefreshing = true;
 
-      return config;
-    } catch (err) {
-      // console.log("Refresh token failed:", err?.message);
-      
-      // 🔑 LOCK IT IN: Save the exact failure time stamp
-      lastRefreshFailureTime = Date.now(); 
+      try {
+        const check = await axios.post("/api/auth/refresh");        
+        const accessToken = check?.data?.accessToken;
+        if (accessToken) {
+          isRefreshing = false;
+          processQueue(null, accessToken);
+          originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
+          return api(originalRequest);
+        }
+      } catch (refreshError) {
+        isRefreshing = false;
+        refreshError._isAuthFailure = true; 
+        if (refreshError.response) {
+          refreshError.response._isAuthFailure = true;
+        }
 
-      err._isAuthFailure = true;
-      if (err.response) {
-        err.response._isAuthFailure = true;
+        processQueue(refreshError, null); 
+        return Promise.reject(refreshError);
       }
-      
-      return Promise.reject(err); 
     }
-  },
-  (error) => {
+
     return Promise.reject(error);
-  },
+  }
 );
