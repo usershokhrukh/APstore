@@ -36,10 +36,10 @@ export async function POST() {
 
       return Response.json({success: true, accessToken: data.accessToken});
     }
-  } catch (err) {
+  } catch (err) {    
     cookieStore.delete("access_token", {path: "/"});
     cookieStore.delete("refresh_token", {path: "/api/auth/refresh"});
-
+    
     return Response.json({error: "Invalid session credentials"}, {status: 401});
   }
 }
