@@ -1,19 +1,79 @@
+import {cookies} from "next/headers";
 import {NextResponse} from "next/server";
 
-export function middleware(request) {
+export async function middleware(request) {
+  const cookieStore = await cookies();
   const token = request.cookies.get("access_token")?.value;
-  const {pathname} = request.nextUrl;
-  if (!token) {
-    if (pathname === "/login") {
-      return NextResponse.next();
+  const remember = request.cookies.get("remember")?.value;
+  const isFreshActivated = request.cookies.get("isFreshActivated")?.value;
+  const {pathname, searchParams} = request.nextUrl;
+  const isFreshSession = searchParams.get("fresh_session");
+
+  if (isFreshActivated && !isFreshSession) {
+    if (!token) {
+      if (pathname.startsWith("/login")) {
+        if (searchParams.size > 0) {
+          const cleanUrl = request.nextUrl.clone();
+          cleanUrl.search = "";
+          return NextResponse.redirect(cleanUrl);
+        }
+        return NextResponse.next();
+      }
+      return NextResponse.redirect(new URL("/login", request.url));
+    } else if (pathname.startsWith("/login") && token) {
+      return NextResponse.redirect(new URL("/", request.url));
     }
-    return NextResponse.redirect(new URL("/login", request.url));
-  } else if(pathname === "/login" && token) {
-    return NextResponse.redirect(new URL("/", request.url));
+    if (searchParams.size > 0) {
+      const cleanUrl = request.nextUrl.clone();
+      cleanUrl.search = "";
+      return NextResponse.redirect(cleanUrl);
+    }
+    return NextResponse.next();
+  } else {
+    cookieStore.delete("isFreshActivated");
+    if (remember === "true") {
+      cookieStore.set("isFreshActivated", "true", {
+        httpOnly: true,
+      });
+      if (!token) {
+        if (pathname.startsWith("/login")) {
+          if (searchParams.size > 0) {
+            const cleanUrl = request.nextUrl.clone();
+
+            cleanUrl.search = "";
+
+            return NextResponse.redirect(cleanUrl);
+          }
+          return NextResponse.next();
+        }
+        return NextResponse.redirect(new URL("/login", request.url));
+      } else if (pathname.startsWith("/login") && token) {
+        return NextResponse.redirect(new URL("/", request.url));
+      }
+      if (searchParams.size > 0) {
+        const cleanUrl = request.nextUrl.clone();
+
+        cleanUrl.search = "";
+
+        return NextResponse.redirect(cleanUrl);
+      }
+      return NextResponse.next();
+    } else {
+      if (pathname.startsWith("/login")) {
+        if (searchParams.size > 0) {
+          const cleanUrl = request.nextUrl.clone();
+
+          cleanUrl.search = "";
+
+          return NextResponse.redirect(cleanUrl);
+        }
+        return NextResponse.next();
+      }
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
   }
-  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/", "/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|fonts|images|favicon.ico).*)"],
 };

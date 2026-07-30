@@ -24,7 +24,6 @@ const NotificationCustom = ({children}) => {
   const errorTimerRef = useRef(null);
 
   useEffect(() => {
-    console.log(error);
     if (error.text?.trim().length) {
       setErrorClose(true);
       if (errorTimerRef.current) {

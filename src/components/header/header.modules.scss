@@ -1,1 +1,29 @@
 @use "../../style/mixin.scss" as *;
+.header{
+  background-color: #f8f9fa;
+  width: 100%;
+  border-bottom: 1px solid #ccd1dc;
+  height: 80px;
+  padding: 20px 50px;
+  &__div{
+    position: relative;
+  }
+  &__svg{
+    position: absolute;
+    width: 20px;
+    top: 6px;
+    left: 155px;
+    color: #939598;
+  }
+  &__svg2{
+    color: black;
+  }
+  &__search{
+    padding-left: 10px;
+    padding-bottom: 2px;
+    height: 35px;
+    border-radius: 5px;
+    border: #ccd1dc solid 2px;
+    background-color: #fff;
+  }
+}
