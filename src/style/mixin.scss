@@ -7,3 +7,7 @@
 @mixin inter {
   font-family: "Inter";
 }
+
+@mixin paddingContainersBig() {
+  padding: 20px 30px;
+}
