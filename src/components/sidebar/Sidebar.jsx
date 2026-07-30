@@ -13,10 +13,10 @@ const Sidebar = () => {
           <p className="sidebar__title">APstore</p>
         </div>
         <div className="sidebar__text">
-          <Link href="#" className="sidebar__p">Product</Link>
+          <Link href="#" className="sidebar__p">Dashboard</Link>
           <div className="sidebar__dropdown">
             <button className="sidebar__btn" onClick={() => setDrop(!drop)}>
-              Nimadir
+              Products
               {!drop ? (
                 <span className="sidebar__span"><svg 
                 width={25}
@@ -29,16 +29,18 @@ const Sidebar = () => {
             </button>
             {drop ? (
               <div className="sidebar__drop">
-                <Link className="sidebar__link" href="">nimadir</Link>
-                <Link className="sidebar__link" href="">nimadir</Link>
-                <Link className="sidebar__link" href="">nimadir</Link>
-                <Link className="sidebar__link" href="">nimadir</Link>
+                <Link className="sidebar__link" href="">Create</Link>
+                <Link className="sidebar__link" href="">Delete</Link>
+                <Link className="sidebar__link" href="">View</Link>
+                <Link className="sidebar__link" href="">Edit</Link>
               </div>
             ) : null}
           </div>
         </div>
       </div>
-      <div className="sidebar__bottom">Something</div>
+      <div className="sidebar__bottom">
+        <p className="sidebar__p2">Admin</p>
+      </div>
     </div>
   );
 };
