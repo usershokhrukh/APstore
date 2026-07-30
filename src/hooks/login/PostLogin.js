@@ -4,16 +4,23 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import axios from "axios";
 
 const request = async (data) => {
-  const api_key = process.env.NEXT_PUBLIC_API_KEY;
-  const res = await axios.post(`${api_key}/api/v1/auth/login`, data);
-  const {access_token, refresh_token} = res.data;
+  try {
+    const api_key = process.env.NEXT_PUBLIC_API_KEY;
+    const res = await axios.post(`${api_key}/api/v1/auth/login`, data);
+    const {access_token, refresh_token} = res.data;
 
-  const cookieRes = await axios.post("/api/auth/login", {
-    accessToken: access_token,
-    refreshToken: refresh_token,
-  });
+    const cookieRes = await axios.post("/api/auth/login", {
+      accessToken: access_token,
+      refreshToken: refresh_token,
+    });
 
-  return res;
+    return res;
+  } catch (error) {
+    if(axios.isAxiosError(error) && error.response?.data) {
+      throw new Error(error.response.data.message || "Could not resolve!")
+    }
+    throw new Error(error.message || "Something went wrong!")
+  }
 };
 
 export const PostLogin = () => {
