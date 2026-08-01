@@ -77,7 +77,7 @@ const Table = () => {
                   <tr className="table__body-r table__body-r-animate">
                     <td className="table__body-rtd table__body-rtd-min-width">
                       <input
-                        checked={checkedItems[id] ? true : allChecked ? true :  false}
+                        checked={ allChecked ? true :  false}
                         // onChange={(e) => {
                         //   checkedItems[id] = e.target.checked;
                         //   console.log(id);
