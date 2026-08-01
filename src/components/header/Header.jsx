@@ -8,8 +8,8 @@ const Header = () => {
   return (
     <div className="header">
       <div className="header__status">
-        <span className={`header__dot header__dot--${status.type}`} />
         <span>{status.text}</span>
+        <span className={`header__dot header__dot--${status.type}`} />
       </div>
     </div>
   );

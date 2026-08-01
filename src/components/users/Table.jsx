@@ -1,16 +1,14 @@
 "use client";
-import React, {useEffect, useState} from "react";
+
+import React, {useEffect} from "react";
 import "./table.modules.scss";
 import Image from "next/image";
 import {useGetUsers} from "@/hooks/users/GetUsers";
-import {errorCheck} from "@/utils/errorCheck";
-import {useNotify} from "@/hooks/useNotify";
+import { errorCheck } from "@/utils/errorCheck";
+import { useNotify } from "@/hooks/useNotify";
 const Table = () => {
-  const {data, error, isPending, refetch} = useGetUsers();
+  const {data, error} = useGetUsers();
   const {notice} = useNotify();
-  const [allChecked, setAllChecked] = useState(false);
-  const [reloadChecked, setReloadChecked] = useState(false);
-  // const [checkedItems, setCheckedItems] = useState({});
   useEffect(() => {
     if (error?.message) {
       const errors = errorCheck([error?.message]);

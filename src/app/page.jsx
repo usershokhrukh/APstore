@@ -6,13 +6,7 @@ import Dashboard from "../components/dashboard/page";
 
 const Page = () => {
   return (
-    <div className="page">
-      <Sidebar />
-      <main className="page__main">
-        <Header />
         <Dashboard />
-      </main>
-    </div>
   );
 };
 

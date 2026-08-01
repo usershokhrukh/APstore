@@ -2,11 +2,16 @@ import { StatusContext } from "@/context/StatusContext";
 import React, { useContext } from "react";
 
 export const useStatus = () => {
-  const [status, setStatus] = useContext(StatusContext);
+  const context = useContext(StatusContext);
+  const [status, setStatus] = context;
   const processStatus = (text, type) => {
-    setStatus({ text, type });
-  };
+    const newStatus = { text, type };
+    setStatus(newStatus);
 
+    if (typeof window !== "undefined") {
+      localStorage.setItem("app_status", JSON.stringify(newStatus));
+    }
+  };
   return {
     status,
     processStatus,
