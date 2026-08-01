@@ -158,3 +158,13 @@
 
   }
 }
+
+.container {
+  @include display();
+  align-items: start;
+  width: 100%;
+  margin: auto;
+  max-width: 2000px;
+  // min-height: fit-content;
+  flex-grow: 1;
+}
