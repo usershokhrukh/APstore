@@ -1,13 +1,12 @@
-"use client";
-
 import {api} from "@/utils/api";
 import {useQuery} from "@tanstack/react-query";
-export const UseGetHealth = () => {
+
+export const UseGetProductsStats = () => {
   return useQuery({
-    queryKey: ["health"],
+    queryKey: ["products-stats"],
     queryFn: async () => {
-      const res = await api.get("/api/v1/health");
-      return res.data;
+      const res = await api.get("/api/v1/products/stats");
+      return res?.data;
     },
     retry: (failureCount, error) => {
       if (error.response?.status === 401) {

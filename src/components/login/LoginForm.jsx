@@ -59,7 +59,7 @@ const LoginForm = () => {
   useEffect(() => {
     if (data) {
       if (data?.data?.user?.role === "admin") {
-        notice("Admin has found!", "success", "infinite", true);
+        notice("Admin has found!", "success", 2000, true);
         const {accessToken, refreshToken} = data?.data;
         handleTokens({accessToken, refreshToken});
       } else {

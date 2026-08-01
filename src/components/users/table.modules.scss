@@ -1,1 +1,9 @@
 @use "../../style/mixin.scss" as *;
+
+.table {
+  @include display();
+  @include paddingContainersBig();
+  background-color: red;
+  width: 100%;
+  border-radius: 20px;
+}

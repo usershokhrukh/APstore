@@ -1,65 +1,75 @@
 // app/page.jsx (or your parent component)
-"use client"
-import React, { useEffect } from "react";
+"use client";
+import React, {useEffect} from "react";
 import "./dashboard.modules.scss";
 import PieChartComponent from "@/components/charts/PieChart";
 import Table from "../users/Table";
-import { UseGetHealth } from "@/hooks/health/GetHealth";
-import { useRouter } from "next/navigation";
-import { useNotify } from "@/hooks/useNotify";
+import {UseGetHealth} from "@/hooks/health/GetHealth";
+import {useRouter} from "next/navigation";
+import {useNotify} from "@/hooks/useNotify";
+import {UseGetProductsStats} from "@/hooks/products/GetProductsStats";
+import axios from "axios";
+import {errorCheck} from "@/utils/errorCheck";
 
 export default function Dashboard() {
-  const {data: dataHealth, error, refetch} = UseGetHealth();
+  const {data: dataHealth, error: healthError, refetch} = UseGetHealth();
+  const {data: productsStats, error: statsError} = UseGetProductsStats();
   const route = useRouter();
   const {notice} = useNotify();
   const sampleData = [
-    {name: `Active Products`, value: 400},
-    {name: `Inactive Products`, value: 300},
-  ];;
+    {name: `Active Products`, value: productsStats?.activeProducts || 0},
+    {name: `Inactive Products`, value: productsStats?.inactiveProducts || 0},
+  ];
   useEffect(() => {
-    if(error?.message) {
-      notice(`${error?.message} try again later or login!`, "error", 20000, false)
-      route.push("/login")
+    if (healthError?.message || statsError?.message) {
+      const error = errorCheck([healthError?.message, statsError?.message]);
+      if (error[1]) {
+        notice(
+          `Something went wrong, please try later or login again!`,
+          "error",
+          "infinite",
+          true,
+        );
+        const res = axios.post("/api/auth/logout");
+        route.push("/login")
+      }
     }
-  }, [error])
-
-  useEffect(() => {
-    if(error?.message) {
-      console.log(error);
-    }
-  }, [error])
+  }, [healthError, statsError]);
 
   return (
     <main className="dashboard">
       <div className="dashboard__main-top">
         <div className="dashboard__left">
           <h2 className="dashboard__title">Dashboard</h2>
-          {
-            dataHealth ? <div className="dashboard__top-boxes">
-            <span className="dashboard__tboxes-item">
-              <span className="dashboard__tbox-health-title">database:</span>
-              <span className="dashboard__tbox-health-sub">{dataHealth?.data?.database}</span>
-            </span>
-            <span className="dashboard__tboxes-item">
-              <span className="dashboard__tbox-health-title">uptime:</span>
-              <span className="dashboard__tbox-health-sub">{dataHealth?.data?.uptime}+ sec</span>
-            </span>
-            <span className="dashboard__tboxes-item">
-              <span className="dashboard__tbox-health-title">timestamp:</span>
-              <span className="dashboard__tbox-health-sub">
-                {dataHealth?.data?.timestamp}
+          {dataHealth ? (
+            <div className="dashboard__top-boxes">
+              <span className="dashboard__tboxes-item">
+                <span className="dashboard__tbox-health-title">database:</span>
+                <span className="dashboard__tbox-health-sub">
+                  {dataHealth?.database}
+                </span>
               </span>
-            </span>
-          </div> : null
-}         
-
-<button onClick={() => refetch()}>try</button>
-
+              <span className="dashboard__tboxes-item">
+                <span className="dashboard__tbox-health-title">uptime:</span>
+                <span className="dashboard__tbox-health-sub">
+                  {dataHealth?.uptime}+ sec
+                </span>
+              </span>
+              <span className="dashboard__tboxes-item">
+                <span className="dashboard__tbox-health-title">timestamp:</span>
+                <span className="dashboard__tbox-health-sub">
+                  {dataHealth?.timestamp}
+                </span>
+              </span>
+            </div>
+          ) : null}
           <div className="dashboard__top-cards">
             <div className="dashboard__tcards-item">
               <span className="dashboard__tcards-item-box">
                 Total products:
-                <span className="dashboard__tcards-item-mtxt">2390</span>
+                <span className="dashboard__tcards-item-mtxt">
+                  {productsStats?.totalProducts}
+                </span>
               </span>
               <span className="dashboard__tcards-item-svg">
                 <svg
@@ -74,7 +84,9 @@ export default function Dashboard() {
             <div className="dashboard__tcards-item">
               <span className="dashboard__tcards-item-box">
                 Total categories:
-                <span className="dashboard__tcards-item-mtxt">2390</span>
+                <span className="dashboard__tcards-item-mtxt">
+                  {productsStats?.totalCategories}
+                </span>
               </span>
               <span className="dashboard__tcards-item-svg">
                 <svg
@@ -89,7 +101,9 @@ export default function Dashboard() {
             <div className="dashboard__tcards-item">
               <span className="dashboard__tcards-item-box">
                 Average Price:
-                <span className="dashboard__tcards-item-mtxt">$2390</span>
+                <span className="dashboard__tcards-item-mtxt">
+                  ${productsStats?.averagePrice}
+                </span>
               </span>
               <span className="dashboard__tcards-item-svg">
                 <svg
@@ -106,7 +120,7 @@ export default function Dashboard() {
         <PieChartComponent chartData={sampleData} />
       </div>
       <div className="dashboard__main-bottom">
-        <Table/>
+        <Table />
       </div>
     </main>
   );

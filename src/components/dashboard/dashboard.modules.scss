@@ -105,7 +105,7 @@
     position: relative;
     flex-direction: column;
     gap: 20px;
-    border-radius: 10px;
+    border-radius: 20px;
     flex-grow: 1;
     padding: 20px;
     background-color: var(--app-white);
@@ -149,5 +149,12 @@
     right: 10px;
     color: var(--text-muted);
     opacity: 0.4;
+  }
+
+  &__main-bottom {
+    @include display();
+    width: 100%;
+    gap: 20px;
+    align-items: start;
   }
 }
