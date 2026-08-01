@@ -33,9 +33,9 @@ const page = () => {
         </thead>
         <tbody>
           {products?.length > 0 ? (
-            products.map((product) => (
+            products.map((product,index) => (
               <tr key={product.id}>
-                <td>{product.id}</td>
+                <td>{index + 1}</td>
                 <td>
                   <img
                     src={product.image}
