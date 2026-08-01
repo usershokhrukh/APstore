@@ -1,9 +1,130 @@
 @use "../../style/mixin.scss" as *;
+@use "../../style/var.scss" as *;
 
 .table {
   @include display();
-  @include paddingContainersBig();
-  background-color: red;
   width: 100%;
-  border-radius: 20px;
+  &__main {
+    @include display();
+    @include whiteBoxesShadow();
+    @include paddingContainersBig();
+    flex-direction: column;
+    width: 100%;
+    background-color: var(--app-white);
+    border-radius: 20px;
+    gap: 20px;
+  }
+
+  &__head {
+    @include display();
+    justify-content: start;
+    width: 100%;
+  }
+
+  &__head-r {
+    @include display();
+    justify-content: space-between;
+    width: 100%;
+    gap: 30px;
+    padding: 10px;
+  }
+
+  &__head-rth {
+    @include display();
+    @include inter();
+    justify-content: start;
+    flex-grow: 1;
+    width: 10px;
+    overflow-x: auto;
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--text-main);
+    white-space: nowrap;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__head-rth-center,
+  &__body-rtd-center {
+    justify-content: center !important;
+    min-width: 85px;
+  }
+
+  &__body-rtd-center {
+    overflow: none;
+  }
+
+  &__head-rth-min-width,
+  &__body-rtd-min-width {
+    flex-grow: 0 !important;
+    width: fit-content !important;
+  }
+
+  &__body {
+    @include display();
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  &__body-r {
+    @include display();
+    width: 100%;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all 0.2s linear;
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover {
+        @include whiteBoxesShadow();
+      }
+    }
+  }
+
+  &__body-rtd {
+    @include display();
+    @include inter();
+    font-size: 14px;
+    flex-grow: 1;
+    width: 10px;
+    white-space: nowrap;
+    overflow: auto;
+    text-align: start;
+    justify-content: start;
+    gap: 10px;
+
+    color: var(--text-muted);
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__body-img {
+    border-radius: 50px;
+  }
+
+  &__body-span-svg {
+    background-color: var(--cards-pop);
+    min-width: 35px;
+    min-height: 35px;
+    padding: 9px;
+    border-radius: 10px;
+    color: var(--text-muted);
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover {
+        border: 1px solid var(--text-muted);
+      }
+    }
+
+    &:active {
+      background-color: var(--text-muted);
+      color: var(--cards-pop);
+    }
+  }
 }

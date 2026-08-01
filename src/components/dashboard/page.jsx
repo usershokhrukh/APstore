@@ -37,38 +37,36 @@ export default function Dashboard() {
   }, [healthError, statsError]);
 
   return (
-    <main className="dashboard">
+    <main className="dashboard container">
       <div className="dashboard__main-top">
         <div className="dashboard__left">
           <h2 className="dashboard__title">Dashboard</h2>
-          {dataHealth ? (
             <div className="dashboard__top-boxes">
               <span className="dashboard__tboxes-item">
                 <span className="dashboard__tbox-health-title">database:</span>
                 <span className="dashboard__tbox-health-sub">
-                  {dataHealth?.database}
+                  {dataHealth?.database || "..."}
                 </span>
               </span>
               <span className="dashboard__tboxes-item">
                 <span className="dashboard__tbox-health-title">uptime:</span>
                 <span className="dashboard__tbox-health-sub">
-                  {dataHealth?.uptime}+ sec
+                  {dataHealth?.uptime ? `${dataHealth?.uptime} +sec`: "..."}
                 </span>
               </span>
               <span className="dashboard__tboxes-item">
                 <span className="dashboard__tbox-health-title">timestamp:</span>
                 <span className="dashboard__tbox-health-sub">
-                  {dataHealth?.timestamp}
+                  {dataHealth?.timestamp || "..."}
                 </span>
               </span>
             </div>
-          ) : null}
           <div className="dashboard__top-cards">
             <div className="dashboard__tcards-item">
               <span className="dashboard__tcards-item-box">
                 Total products:
                 <span className="dashboard__tcards-item-mtxt">
-                  {productsStats?.totalProducts}
+                  {productsStats?.totalProducts || "..."}
                 </span>
               </span>
               <span className="dashboard__tcards-item-svg">
@@ -85,7 +83,7 @@ export default function Dashboard() {
               <span className="dashboard__tcards-item-box">
                 Total categories:
                 <span className="dashboard__tcards-item-mtxt">
-                  {productsStats?.totalCategories}
+                  {productsStats?.totalCategories || "..."}
                 </span>
               </span>
               <span className="dashboard__tcards-item-svg">
@@ -102,7 +100,7 @@ export default function Dashboard() {
               <span className="dashboard__tcards-item-box">
                 Average Price:
                 <span className="dashboard__tcards-item-mtxt">
-                  ${productsStats?.averagePrice}
+                  {productsStats?.averagePrice ? `$${productsStats?.averagePrice}` : "..."}
                 </span>
               </span>
               <span className="dashboard__tcards-item-svg">
