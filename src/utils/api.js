@@ -19,13 +19,18 @@ const processQueue = (error, token = null) => {
 };
 
 api.interceptors.response.use(
-  (response) => response, 
+  (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    if (error.response?.status === 401 && !originalRequest._retry && !originalRequest._isPublic) {
-        if (isRefreshing) {
+
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest._isPublic
+    ) {
+      if (isRefreshing) {
         return new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject });
+          failedQueue.push({resolve, reject});
         })
           .then((token) => {
             originalRequest.headers["Authorization"] = `Bearer ${token}`;
@@ -40,7 +45,7 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const check = await axios.post("/api/auth/refresh");        
+        const check = await axios.post("/api/auth/refresh");
         const accessToken = check?.data?.accessToken;
         if (accessToken) {
           isRefreshing = false;
@@ -50,16 +55,16 @@ api.interceptors.response.use(
         }
       } catch (refreshError) {
         isRefreshing = false;
-        refreshError._isAuthFailure = true; 
+        refreshError._isAuthFailure = true;
         if (refreshError.response) {
           refreshError.response._isAuthFailure = true;
         }
 
-        processQueue(refreshError, null); 
+        processQueue(refreshError, null);
         return Promise.reject(refreshError);
       }
     }
 
     return Promise.reject(error);
-  }
+  },
 );
