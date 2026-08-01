@@ -1,14 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useContext, useState } from "react";
 import "./header.modules.scss";
-import { useStatus } from "@/hooks/useStatus";
+import { StatusContext } from "@/context/StatusContext";
 const Header = () => {
-  const { status } = useStatus();
+  const [status, setStatus] = useContext(StatusContext)  
   return (
     <div className="header">
       <div className="header__status">
-        <span>{status.text}</span>
+        <span >{status.text}</span>
         <span className={`header__dot header__dot--${status.type}`} />
       </div>
     </div>

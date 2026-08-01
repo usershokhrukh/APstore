@@ -1,19 +1,16 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import "./table.modules.scss";
-import Image from "next/image";
-import { useGetUsers } from "@/hooks/users/GetUsers";
-import { errorCheck } from "@/utils/errorCheck";
-import { useNotify } from "@/hooks/useNotify";
-
+import {useGetUsers} from "@/hooks/users/GetUsers";
+import {errorCheck} from "@/utils/errorCheck";
+import {useNotify} from "@/hooks/useNotify";
+import { StatusContext } from "@/context/StatusContext";
 const Table = () => {
-  const { data, error, isPending, refetch } = useGetUsers();
-  const { notice } = useNotify();
-  
-  // 1. Initialize empty local state array
+  const {data, error, isPending, refetch} = useGetUsers();
+  const {notice} = useNotify();
   const [items, setItems] = useState([]);
+  const [status, setStatus] = useContext(StatusContext)
 
-  // 2. Synchronize state seamlessly when API data finishes fetching
   useEffect(() => {
     if (data?.items) {
       const formattedItems = data.items.map((user) => ({
@@ -24,10 +21,8 @@ const Table = () => {
     }
   }, [data]);
 
-  // 3. Derived State: Checked calculation
   const isAllChecked = items.length > 0 && items.every((item) => item.checked);
 
-  // 4. Handle Master / Global Select All Changes
   const handleGlobalChange = (e) => {
     const targetChecked = e.target.checked;
     const updatedItems = items.map((item) => ({
@@ -37,17 +32,15 @@ const Table = () => {
     setItems(updatedItems);
   };
 
-  // 5. Handle Row-level Checkbox Changes
   const handleIndividualChanges = (id) => {
     const updatedItems = items.map((item) => {
       if (item.id === id) {
-        return { ...item, checked: !item.checked };
+        return {...item, checked: !item.checked};
       }
       return item;
     });
     setItems(updatedItems);
   };
-
   useEffect(() => {
     if (error?.message) {
       const errors = errorCheck([error?.message]);
@@ -63,6 +56,9 @@ const Table = () => {
   return (
     <div className="table">
       <div className="table__top"></div>
+      {/* <button onClick={() => {
+        setStatus({text: "Loading...", type: "loading"})
+      }}>try</button> */}
       <table className="table__main">
         <thead className="table__head">
           <tr className="table__head-r">
@@ -87,21 +83,22 @@ const Table = () => {
         <tbody className="table__body">
           {data?.items?.length ? (
             data?.items?.map(
-              ({
-                id,
-                username,
-                email,
-                fullName,
-                phone,
-                avatar,
-                role,
-                isActive,
-                lastLoginAt,
-              }) => {
-                // Find matching object inside our clean React state tracking system
+              (
+                {
+                  id,
+                  username,
+                  email,
+                  fullName,
+                  phone,
+                  avatar,
+                  role,
+                  isActive,
+                  lastLoginAt,
+                },
+                index,
+              ) => {
                 const currentItem = items.find((item) => item.id === id);
                 const isChecked = currentItem ? currentItem.checked : false;
-
                 return (
                   <tr key={id} className="table__body-r table__body-r-animate">
                     <td className="table__body-rtd table__body-rtd-min-width">
@@ -113,7 +110,6 @@ const Table = () => {
                       />
                     </td>
                     <td className="table__body-rtd">
-                      {/* Swapped standard img out for Next.js optimal Image tag per your setup */}
                       <img
                         width={30}
                         height={30}
@@ -126,17 +122,21 @@ const Table = () => {
                     <td className="table__body-rtd">{role}</td>
                     <td className="table__body-rtd">{fullName}</td>
                     <td className="table__body-rtd">{email}</td>
-                    <td className="table__body-rtd">{phone}</td>
+                    <td className="table__body-rtd">{phone}]</td>
                     <td className="table__body-rtd">
                       {lastLoginAt || "Not logged yet"}
                     </td>
                     <td className="table__body-rtd table__body-rtd-center">
                       {isActive ? (
-                        <span className="table__body-status table__body-status-active">
+                        <span
+                          className={`table__body-status table__body-status-active`}
+                        >
                           Active
                         </span>
                       ) : (
-                        <span className="table__body-status table__body-status-inactive">
+                        <span
+                          className={`table__body-status table__body-status-inactive`}
+                        >
                           Inactive
                         </span>
                       )}
@@ -163,10 +163,10 @@ const Table = () => {
                     </td>
                   </tr>
                 );
-              }
+              },
             )
-          ) : data === undefined && !isPending ? (
-            <span>No data found</span>
+          ) : data == undefined && !isPending ? (
+            <span></span>
           ) : null}
         </tbody>
       </table>
