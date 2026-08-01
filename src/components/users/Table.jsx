@@ -1,16 +1,16 @@
 "use client";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./table.modules.scss";
 import {useGetUsers} from "@/hooks/users/GetUsers";
 import {errorCheck} from "@/utils/errorCheck";
 import {useNotify} from "@/hooks/useNotify";
-import { StatusContext } from "@/context/StatusContext";
+import UsersModalDelete from "../modal/UsersModalDelete";
+import GlobalModal from "../modal/GlobalModal";
+
 const Table = () => {
   const {data, error, isPending, refetch} = useGetUsers();
   const {notice} = useNotify();
   const [items, setItems] = useState([]);
-  const [status, setStatus] = useContext(StatusContext)
-
   useEffect(() => {
     if (data?.items) {
       const formattedItems = data.items.map((user) => ({
@@ -56,9 +56,6 @@ const Table = () => {
   return (
     <div className="table">
       <div className="table__top"></div>
-      {/* <button onClick={() => {
-        setStatus({text: "Loading...", type: "loading"})
-      }}>try</button> */}
       <table className="table__main">
         <thead className="table__head">
           <tr className="table__head-r">
@@ -77,7 +74,7 @@ const Table = () => {
             <th className="table__head-rth">Phone</th>
             <th className="table__head-rth">Last login at</th>
             <th className="table__head-rth table__head-rth-center">Status</th>
-            <th className="table__head-rth table__head-rth-center">Edit</th>
+            <th className="table__head-rth table__head-rth-center">Actions</th>
           </tr>
         </thead>
         <tbody className="table__body">
@@ -170,6 +167,8 @@ const Table = () => {
           ) : null}
         </tbody>
       </table>
+      
+      {/* <GlobalModal comp={<UsersModalDelete/>}/> */}
     </div>
   );
 };
