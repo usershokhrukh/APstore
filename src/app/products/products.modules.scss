@@ -3,8 +3,9 @@
 
 .product {
   @include display();
-  width: 100%;
+  width: 95% !important;
   padding: 20px 0;
+  margin: 0 auto;
 
   &__table {
     width: 100%;
@@ -100,35 +101,25 @@
       margin-right: 0;
     }
   }
-
-  &__edit {
-    background-color: rgba(59, 130, 246, 0.1); 
-    color: var(--app-blue);
-
-    @media (hover: hover) {
-      &:hover {
-        background-color: var(--app-blue);
-        color: var(--app-white);
-      }
-    }
-
-  }
-
-  &__delete {
-    background-color: rgba(239, 68, 68, 0.1); 
-    color: var(--app-red);
+  .btn {
+    background-color: var(--cards-pop);
+    min-width: 35px;
+    min-height: 35px;
+    padding: 9px;
+    border-radius: 10px;
+    color: var(--text-muted);
+    cursor: pointer;
 
     @media (hover: hover) {
       &:hover {
-        background-color: var(--app-red);
-        color: var(--app-white);
+        border: 1px solid var(--text-muted);
       }
     }
 
     &:active {
-      transform: scale(0.95);
+      background-color: var(--text-muted);
+      color: var(--cards-pop);
     }
   }
-
  
 }

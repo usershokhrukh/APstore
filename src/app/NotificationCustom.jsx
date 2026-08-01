@@ -5,19 +5,22 @@ import { Providers } from "./provides";
 import { StatusContext } from "@/context/StatusContext";
 import { ErrorContext } from "@/context/ErrorContext";
 const NotificationCustom = ({ children }) => {
-  const [status, setStatus] = useState(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("app_status");
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch (e) {
-          console.error(e);
-        }
-      }
+  const [status, setStatus] = useState({
+  text: "",
+  type: "",
+});
+
+useEffect(() => {
+  const saved = localStorage.getItem("app_status");
+
+  if (saved) {
+    try {
+      setStatus(JSON.parse(saved));
+    } catch (e) {
+      console.error(e);
     }
-    return { text: "", type: "" };
-  });
+  }
+}, []);
   const [error, setError] = useState({
     text: "",
     timeout: 5000,
