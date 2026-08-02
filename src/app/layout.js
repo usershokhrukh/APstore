@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.scss";
 import NotificationCustom from "./NotificationCustom";
@@ -31,7 +31,10 @@ export default async function RootLayout({children}) {
         <NotificationCustom>
           <ModalGuard>
             <StatusGuard>
+              <Suspense>
+
               <AppLayout>{children}</AppLayout>
+              </Suspense>
             </StatusGuard>
             <SessionGuard />
           </ModalGuard>

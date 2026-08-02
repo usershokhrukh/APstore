@@ -8,6 +8,7 @@ const UsersViewModal = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("user_view");
   const {data, isPending} = useGetUsersById(id);
+  console.log(data);
   
   if(!data && isPending) {
     return <>Loading...</>
