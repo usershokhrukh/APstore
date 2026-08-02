@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import "../app/page.modules.scss"
 import { usePathname } from "next/navigation";
 import Sidebar from "@/components/sidebar/Sidebar";
 import Header from "@/components/header/Header";
