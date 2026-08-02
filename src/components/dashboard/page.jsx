@@ -1,15 +1,18 @@
 // app/page.jsx (or your parent component)
 "use client";
-import React, {useEffect} from "react";
+import React, {Suspense, useContext, useEffect} from "react";
 import "./dashboard.modules.scss";
 import PieChartComponent from "@/components/charts/PieChart";
 import Table from "../users/Table";
 import {UseGetHealth} from "@/hooks/health/GetHealth";
-import {useRouter} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
 import {useNotify} from "@/hooks/useNotify";
 import {UseGetProductsStats} from "@/hooks/products/GetProductsStats";
 import axios from "axios";
 import {errorCheck} from "@/utils/errorCheck";
+import GlobalModal from "../modal/GlobalModal";
+import { ModalContext } from "@/context/ModalContext";
+import UsersModalCheck from "../modal/users/UsersModalCheck";
 
 export default function Dashboard() {
   const {data: dataHealth, error: healthError, refetch} = UseGetHealth();
@@ -20,6 +23,14 @@ export default function Dashboard() {
     {name: `Active Products`, value: productsStats?.activeProducts || 0},
     {name: `Inactive Products`, value: productsStats?.inactiveProducts || 0},
   ];
+  const searchParams = useSearchParams();
+  const {setComp, setClose} = useContext(ModalContext);
+  useEffect(() => {
+    if(searchParams.size) {
+      setComp(<UsersModalCheck/>)
+      setClose(true)
+    }
+  }, [])
   useEffect(() => {
     if (healthError?.message || statsError?.message) {
       const error = errorCheck([healthError?.message, statsError?.message]);
@@ -31,7 +42,7 @@ export default function Dashboard() {
           true,
         );
         const res = axios.post("/api/auth/logout");
-        route.push("/login")
+        route.push("/login");
       }
     }
   }, [healthError, statsError]);
@@ -41,26 +52,26 @@ export default function Dashboard() {
       <div className="dashboard__main-top">
         <div className="dashboard__left">
           <h2 className="dashboard__title">Dashboard</h2>
-            <div className="dashboard__top-boxes">
-              <span className="dashboard__tboxes-item">
-                <span className="dashboard__tbox-health-title">database:</span>
-                <span className="dashboard__tbox-health-sub">
-                  {dataHealth?.database || "..."}
-                </span>
+          <div className="dashboard__top-boxes">
+            <span className="dashboard__tboxes-item">
+              <span className="dashboard__tbox-health-title">database:</span>
+              <span className="dashboard__tbox-health-sub">
+                {dataHealth?.database || "..."}
               </span>
-              <span className="dashboard__tboxes-item">
-                <span className="dashboard__tbox-health-title">uptime:</span>
-                <span className="dashboard__tbox-health-sub">
-                  {dataHealth?.uptime ? `${dataHealth?.uptime} +sec`: "..."}
-                </span>
+            </span>
+            <span className="dashboard__tboxes-item">
+              <span className="dashboard__tbox-health-title">uptime:</span>
+              <span className="dashboard__tbox-health-sub">
+                {dataHealth?.uptime ? `${dataHealth?.uptime} +sec` : "..."}
               </span>
-              <span className="dashboard__tboxes-item">
-                <span className="dashboard__tbox-health-title">timestamp:</span>
-                <span className="dashboard__tbox-health-sub">
-                  {dataHealth?.timestamp || "..."}
-                </span>
+            </span>
+            <span className="dashboard__tboxes-item">
+              <span className="dashboard__tbox-health-title">timestamp:</span>
+              <span className="dashboard__tbox-health-sub">
+                {dataHealth?.timestamp || "..."}
               </span>
-            </div>
+            </span>
+          </div>
           <div className="dashboard__top-cards">
             <div className="dashboard__tcards-item">
               <span className="dashboard__tcards-item-box">
@@ -100,7 +111,9 @@ export default function Dashboard() {
               <span className="dashboard__tcards-item-box">
                 Average Price:
                 <span className="dashboard__tcards-item-mtxt">
-                  {productsStats?.averagePrice ? `$${productsStats?.averagePrice}` : "..."}
+                  {productsStats?.averagePrice
+                    ? `$${productsStats?.averagePrice}`
+                    : "..."}
                 </span>
               </span>
               <span className="dashboard__tcards-item-svg">
@@ -118,7 +131,9 @@ export default function Dashboard() {
         <PieChartComponent chartData={sampleData} />
       </div>
       <div className="dashboard__main-bottom">
-        <Table />
+        <Suspense fallback={<p className="dashboard__tcards-item-box">Loading table...</p>}>
+          <Table />
+        </Suspense>
       </div>
     </main>
   );

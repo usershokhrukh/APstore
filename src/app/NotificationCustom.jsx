@@ -68,7 +68,7 @@ useEffect(() => {
     setErrorClose(null);
   };
   return (
-    <StatusContext.Provider value={[ status, setStatus ]}>
+    <StatusContext.Provider value={[status, setStatus]}>
       <ErrorContext.Provider value={[setError, setNoticeSVG]}>
         <Providers>
           <span
