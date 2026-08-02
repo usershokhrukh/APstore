@@ -1,10 +1,10 @@
 "use client";
 
-import {useRouter} from "next/navigation";
-import {useEffect} from "react";
+import { useEffect} from "react";
 
 export default function SessionGuard() {
   useEffect(() => {
+    
     const first = sessionStorage.getItem("isFresh");
     if (!first) {
       const url = new URL(window.location.href);
