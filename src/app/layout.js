@@ -5,6 +5,7 @@ import NotificationCustom from "./NotificationCustom";
 import SessionGuard from "./SessionGuard";
 import AppLayout from "@/components/AppLayout";
 import StatusGuard from "./StatusGuard";
+import ModalGuard from "./ModalGuard";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -28,11 +29,13 @@ export default async function RootLayout({children}) {
     >
       <body className="min-h-full flex flex-col">
         <NotificationCustom>
-          <StatusGuard>
-            <AppLayout>{children}</AppLayout>
-          </StatusGuard>
+          <ModalGuard>
+            <StatusGuard>
+              <AppLayout>{children}</AppLayout>
+            </StatusGuard>
+            <SessionGuard />
+          </ModalGuard>
         </NotificationCustom>
-        <SessionGuard />
       </body>
     </html>
   );

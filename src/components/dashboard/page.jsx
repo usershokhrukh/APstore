@@ -10,6 +10,7 @@ import {useNotify} from "@/hooks/useNotify";
 import {UseGetProductsStats} from "@/hooks/products/GetProductsStats";
 import axios from "axios";
 import {errorCheck} from "@/utils/errorCheck";
+import GlobalModal from "../modal/GlobalModal";
 
 export default function Dashboard() {
   const {data: dataHealth, error: healthError, refetch} = UseGetHealth();

@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { Providers } from "./provides";
-import { StatusContext } from "@/context/StatusContext";
-import { ErrorContext } from "@/context/ErrorContext";
-const NotificationCustom = ({ children }) => {
+import React, {useEffect, useRef, useState} from "react";
+import {Providers} from "./provides";
+import {StatusContext} from "@/context/StatusContext";
+import {ErrorContext} from "@/context/ErrorContext";
+const NotificationCustom = ({children}) => {
   const [status, setStatus] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("app_status");
@@ -16,7 +16,7 @@ const NotificationCustom = ({ children }) => {
         }
       }
     }
-    return { text: "", type: "" };
+    return {text: "", type: ""};
   });
   const [error, setError] = useState({
     text: "",
@@ -65,7 +65,7 @@ const NotificationCustom = ({ children }) => {
     setErrorClose(null);
   };
   return (
-    <StatusContext.Provider value={[ status, setStatus ]}>
+    <StatusContext.Provider value={[status, setStatus]}>
       <ErrorContext.Provider value={[setError, setNoticeSVG]}>
         <Providers>
           <span

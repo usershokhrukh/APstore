@@ -8,14 +8,13 @@ export async function middleware(request) {
   const isFreshActivated = request.cookies.get("isFreshActivated")?.value;
   const {pathname, searchParams} = request.nextUrl;
   const isFreshSession = searchParams.get("fresh_session");
-
+  const hasFreshSession = searchParams.has("fresh_session");
   if (isFreshActivated && !isFreshSession) {
     if (!token) {
       if (pathname.startsWith("/login")) {
-        if (searchParams.size > 0) {
-          const cleanUrl = request.nextUrl.clone();
-          cleanUrl.search = "";
-          return NextResponse.redirect(cleanUrl);
+        if (searchParams.size > 0 && hasFreshSession) {
+          request.nextUrl.searchParams.delete("fresh_session");
+          return NextResponse.redirect(request.nextUrl);
         }
         return NextResponse.next();
       }
@@ -23,10 +22,9 @@ export async function middleware(request) {
     } else if (pathname.startsWith("/login") && token) {
       return NextResponse.redirect(new URL("/", request.url));
     }
-    if (searchParams.size > 0) {
-      const cleanUrl = request.nextUrl.clone();
-      cleanUrl.search = "";
-      return NextResponse.redirect(cleanUrl);
+    if (searchParams.size > 0 && hasFreshSession) {
+      request.nextUrl.searchParams.delete("fresh_session");
+      return NextResponse.redirect(request.nextUrl);
     }
     return NextResponse.next();
   } else {
@@ -37,12 +35,9 @@ export async function middleware(request) {
       });
       if (!token) {
         if (pathname.startsWith("/login")) {
-          if (searchParams.size > 0) {
-            const cleanUrl = request.nextUrl.clone();
-
-            cleanUrl.search = "";
-
-            return NextResponse.redirect(cleanUrl);
+          if (searchParams.size > 0 && hasFreshSession) {
+            request.nextUrl.searchParams.delete("fresh_session");
+            return NextResponse.redirect(request.nextUrl);
           }
           return NextResponse.next();
         }
@@ -50,22 +45,16 @@ export async function middleware(request) {
       } else if (pathname.startsWith("/login") && token) {
         return NextResponse.redirect(new URL("/", request.url));
       }
-      if (searchParams.size > 0) {
-        const cleanUrl = request.nextUrl.clone();
-
-        cleanUrl.search = "";
-
-        return NextResponse.redirect(cleanUrl);
+      if (searchParams.size > 0 && hasFreshSession) {
+        request.nextUrl.searchParams.delete("fresh_session");
+        return NextResponse.redirect(request.nextUrl);
       }
       return NextResponse.next();
     } else {
       if (pathname.startsWith("/login")) {
-        if (searchParams.size > 0) {
-          const cleanUrl = request.nextUrl.clone();
-
-          cleanUrl.search = "";
-
-          return NextResponse.redirect(cleanUrl);
+        if (searchParams.size > 0 && hasFreshSession) {
+          request.nextUrl.searchParams.delete("fresh_session");
+          return NextResponse.redirect(request.nextUrl);
         }
         return NextResponse.next();
       }

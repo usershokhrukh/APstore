@@ -1,0 +1,31 @@
+@use "../../style/mixin.scss" as *;
+@use "../../style/var.scss" as *;
+
+.not-found {
+
+  &__top {
+    @include display();
+    flex-direction: column;
+    gap: 10px;
+  }
+  &__title {
+    @include inter();
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-main);
+  }
+
+  &__span {
+    svg {
+      width: 40px;
+      height: 40px;
+    }
+    color: var(--text-main);
+  }
+
+  &__sub {
+    @include inter();
+    font-size: 13px;
+    color: var(--text-muted)
+  }
+}

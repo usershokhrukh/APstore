@@ -1,16 +1,23 @@
 "use client";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import "./table.modules.scss";
 import {useGetUsers} from "@/hooks/users/GetUsers";
 import {errorCheck} from "@/utils/errorCheck";
 import {useNotify} from "@/hooks/useNotify";
-import UsersModalDelete from "../modal/UsersModalDelete";
-import GlobalModal from "../modal/GlobalModal";
+import Link from "next/link";
+import {ModalContext} from "@/context/ModalContext";
+import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import UsersModalCheck from "../modal/users/UsersModalCheck";
 
 const Table = () => {
-  const {data, error, isPending, refetch} = useGetUsers();
+  const {data, error, isPending} = useGetUsers();
   const {notice} = useNotify();
   const [items, setItems] = useState([]);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const {setComp, setClose} = useContext(ModalContext);
+
   useEffect(() => {
     if (data?.items) {
       const formattedItems = data.items.map((user) => ({
@@ -53,6 +60,29 @@ const Table = () => {
   const avatarDefault =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4EqrNcj9a_lNfv2gnqBCgXpM8sKQ5sHWJO0fTYCffMA&s=10";
 
+  const [key, setKey] = useState(null);
+
+  const openModal = (key, id) => {
+    if (!key || !id)
+      return notice("Something went wrong!", "error", "infinite", true);
+    setKey(key);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set(key, id);
+    router.push(`${pathname}?${params.toString()}`, {scroll: false});
+    setComp(<UsersModalCheck />);
+  };
+
+  useEffect(() => {
+    if (searchParams.size > 0 && key) {
+      if (searchParams.get(key)) {
+        setClose(true);
+      } else {
+        notice("Could not get data!", "error", "infinite", true);
+      }
+      setKey(null);
+    }
+  }, [searchParams, key]);
+
   return (
     <div className="table">
       <div className="table__top"></div>
@@ -74,7 +104,7 @@ const Table = () => {
             <th className="table__head-rth">Phone</th>
             <th className="table__head-rth">Last login at</th>
             <th className="table__head-rth table__head-rth-center">Status</th>
-            <th className="table__head-rth table__head-rth-center">Actions</th>
+            <th className="table__head-rth table__head-rth-center">More</th>
           </tr>
         </thead>
         <tbody className="table__body">
@@ -119,7 +149,7 @@ const Table = () => {
                     <td className="table__body-rtd">{role}</td>
                     <td className="table__body-rtd">{fullName}</td>
                     <td className="table__body-rtd">{email}</td>
-                    <td className="table__body-rtd">{phone}]</td>
+                    <td className="table__body-rtd">{phone}</td>
                     <td className="table__body-rtd">
                       {lastLoginAt || "Not logged yet"}
                     </td>
@@ -139,24 +169,25 @@ const Table = () => {
                       )}
                     </td>
                     <td className="table__body-rtd table__body-rtd-center">
-                      <span className="table__body-span-svg">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                        >
-                          <path d="M6.41421 15.89L16.5563 5.74785L15.1421 4.33363L5 14.4758V15.89H6.41421ZM7.24264 17.89H3V13.6473L14.435 2.21231C14.8256 1.82179 15.4587 1.82179 15.8492 2.21231L18.6777 5.04074C19.0682 5.43126 19.0682 6.06443 18.6777 6.45495L7.24264 17.89ZM3 19.89H21V21.89H3V19.89Z"></path>
-                        </svg>
-                      </span>{" "}
-                      <span className="table__body-span-svg">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                        >
-                          <path d="M4 8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8ZM6 10V20H18V10H6ZM9 12H11V18H9V12ZM13 12H15V18H13V12ZM7 5V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V5H22V7H2V5H7ZM9 4V5H15V4H9Z"></path>
-                        </svg>
-                      </span>
+                      <Link
+                        href={{
+                          pathname: `/`,
+                          query: {user_view: id},
+                        }}
+                        scroll={false}
+                        className="table__body-link"
+                        onClick={() => openModal("user_view", id)}
+                      >
+                        <span className="table__body-span-svg">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                          >
+                            <path d="M12.0003 3C17.3924 3 21.8784 6.87976 22.8189 12C21.8784 17.1202 17.3924 21 12.0003 21C6.60812 21 2.12215 17.1202 1.18164 12C2.12215 6.87976 6.60812 3 12.0003 3ZM12.0003 19C16.2359 19 19.8603 16.052 20.7777 12C19.8603 7.94803 16.2359 5 12.0003 5C7.7646 5 4.14022 7.94803 3.22278 12C4.14022 16.052 7.7646 19 12.0003 19ZM12.0003 16.5C9.51498 16.5 7.50026 14.4853 7.50026 12C7.50026 9.51472 9.51498 7.5 12.0003 7.5C14.4855 7.5 16.5003 9.51472 16.5003 12C16.5003 14.4853 14.4855 16.5 12.0003 16.5ZM12.0003 14.5C13.381 14.5 14.5003 13.3807 14.5003 12C14.5003 10.6193 13.381 9.5 12.0003 9.5C10.6196 9.5 9.50026 10.6193 9.50026 12C9.50026 13.3807 10.6196 14.5 12.0003 14.5Z"></path>
+                          </svg>
+                        </span>
+                      </Link>
                     </td>
                   </tr>
                 );
@@ -167,8 +198,6 @@ const Table = () => {
           ) : null}
         </tbody>
       </table>
-      
-      {/* <GlobalModal comp={<UsersModalDelete/>}/> */}
     </div>
   );
 };

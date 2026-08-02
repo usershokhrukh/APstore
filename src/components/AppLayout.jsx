@@ -3,8 +3,9 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import Sidebar from "@/components/sidebar/Sidebar";
 import Header from "@/components/header/Header";
+import "../app/page.modules.scss"
 
-export default function AppLayout({ children }) {
+export default function AppLayout({ children}) {
   const pathname = usePathname();
   const isLoginPage = pathname === "/login";
 
