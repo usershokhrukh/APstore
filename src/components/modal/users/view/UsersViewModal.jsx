@@ -18,12 +18,15 @@ const UsersViewModal = () => {
       notice(null)
     }
   }, [dataUser])
+  useEffect(() => {
+    setData(null);
+  }, [])
     const avatarDefault =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4EqrNcj9a_lNfv2gnqBCgXpM8sKQ5sHWJO0fTYCffMA&s=10";
 
   if (!data && isPending) {
     return <UsersViewLoading/>;
-  } else if (data && !isPending) {
+  } else if (data && !isPending && dataUser) {
     return (
       <div className="view-modal">
         <img className="view-modal__img" src={data?.avatar ||avatarDefault } alt="" />
