@@ -8,9 +8,24 @@ import Link from "next/link";
 import {ModalContext} from "@/context/ModalContext";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import UsersModalCheck from "../modal/users/UsersModalCheck";
+import TableLoading from "./TableLoading";
 
 const Table = () => {
-  const {data, error, isPending} = useGetUsers();
+  const [limit, setLimit] = useState({
+    page: 1,
+    limit: 12
+  })
+  const queryString = `?page=${limit?.page}&limit=${limit?.limit}`
+  const {data, error, isPending} = useGetUsers(queryString);
+  // const data = null;
+  // const error = null;
+  // const isPending= null
+  // const queryClient = useQueryClient();
+  // useEffect(() => {
+  //   queryClient.removeQueries({queryKey: ["users"]})
+  // }, [])
+  // console.log(data);
+  
   const {notice} = useNotify();
   const [items, setItems] = useState([]);
   const router = useRouter();
@@ -85,7 +100,8 @@ const Table = () => {
   return (
     <div className="table">
       <div className="table__top"></div>
-      <table className="table__main">
+      {
+        data?.items?.length ? <table className="table__main">
         <thead className="table__head">
           <tr className="table__head-r">
             <th className="table__head-rth table__head-rth-min-width">
@@ -107,7 +123,7 @@ const Table = () => {
           </tr>
         </thead>
         <tbody className="table__body">
-          {data?.items?.length ? (
+          {
             data?.items?.map(
               (
                 {
@@ -192,11 +208,11 @@ const Table = () => {
                 );
               },
             )
-          ) : data == undefined && !isPending ? (
-            <span></span>
-          ) : null}
+          }
         </tbody>
-      </table>
+      </table> : !data && !isPending ? notice("Could not get products, try later!", "error", 2000, false) : <TableLoading/>
+      }
+      
     </div>
   );
 };
