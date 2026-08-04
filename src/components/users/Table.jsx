@@ -15,9 +15,7 @@ const Table = () => {
   const [items, setItems] = useState([]);
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const {setComp, setClose} = useContext(ModalContext);
-
+  
   useEffect(() => {
     if (data?.items) {
       const formattedItems = data.items.map((user) => ({
@@ -27,9 +25,9 @@ const Table = () => {
       setItems(formattedItems);
     }
   }, [data]);
-
+  
   const isAllChecked = items.length > 0 && items.every((item) => item.checked);
-
+  
   const handleGlobalChange = (e) => {
     const targetChecked = e.target.checked;
     const updatedItems = items.map((item) => ({
@@ -38,7 +36,7 @@ const Table = () => {
     }));
     setItems(updatedItems);
   };
-
+  
   const handleIndividualChanges = (id) => {
     const updatedItems = items.map((item) => {
       if (item.id === id) {
@@ -56,15 +54,18 @@ const Table = () => {
       }
     }
   }, [error]);
-
+  
   const avatarDefault =
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4EqrNcj9a_lNfv2gnqBCgXpM8sKQ5sHWJO0fTYCffMA&s=10";
-
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4EqrNcj9a_lNfv2gnqBCgXpM8sKQ5sHWJO0fTYCffMA&s=10";
+  
+  const {setComp, setClose} = useContext(ModalContext);
+  const searchParams = useSearchParams();
   const [key, setKey] = useState(null);
 
   const openModal = (key, id) => {
     if (!key || !id)
       return notice("Something went wrong!", "error", "infinite", true);
+    notice("Loading...", "info", "infinite", false)
     setKey(key);
     const params = new URLSearchParams(searchParams.toString());
     params.set(key, id);
