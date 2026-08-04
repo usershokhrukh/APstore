@@ -65,7 +65,6 @@ const Table = () => {
   const openModal = (key, id) => {
     if (!key || !id)
       return notice("Something went wrong!", "error", "infinite", true);
-    notice("Loading...", "info", "infinite", false)
     setKey(key);
     const params = new URLSearchParams(searchParams.toString());
     params.set(key, id);
