@@ -66,9 +66,8 @@ const Table = () => {
     if (!key || !id)
       return notice("Something went wrong!", "error", "infinite", true);
     setKey(key);
-    const params = new URLSearchParams(searchParams.toString());
-    params.set(key, id);
-    router.push(`${pathname}?${params.toString()}`, {scroll: false});
+    // const params = new URLSearchParams(searchParams.toString());
+    // router.push(`?${params.toString()}`, {scroll: false});
     setComp(<UsersModalCheck />);
   };
 

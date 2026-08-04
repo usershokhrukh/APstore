@@ -59,7 +59,7 @@ const LoginForm = () => {
       });
       const cookieActive = await axios.post("/api/cookieactive");
       if (cookieResponse?.data?.success && cookieActive?.data?.success) {
-        router.replace("/");
+        router.refresh();
       } else {
         notice(
           `${cookieResponse?.data?.error} & ${cookieActive?.data?.error}`,
