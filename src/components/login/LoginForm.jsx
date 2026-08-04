@@ -35,10 +35,10 @@ const LoginForm = () => {
     }
     if (!input.password && input.username) {
       inputPassword?.current?.focus();
-      return notice("Fill all inputs", "error", 2000, false);
+      return notice("Filling password is necessary!", "info", 2000, false);
     } else if (input.password && !input.username) {
       inputUsername?.current?.focus();
-      return notice("Fill all inputs", "error", 2000, false);
+      return notice("Filling username is necessary!", "info", 2000, false);
     }
     notice("Pending...", "info", "infinite", false);
     mutate(input);
