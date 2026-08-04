@@ -9,25 +9,25 @@ import UsersViewLoading from "./UsersViewLoading";
 const UsersViewModal = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("user_view");
-  const [data, setData] = useState(null);
-  const {data: dataUser, isPending, refetch} = useGetUsersById(id);
-  const {notice} = useNotify();
-  useEffect(() => {
-    if(dataUser) {
-      setData(dataUser)
-      notice(null)
-    }
-  }, [dataUser])
-  useEffect(() => {
-    setData(null);
-    refetch()
-  }, [])
+  // const [data, setData] = useState(null);
+  const {data, isPending, refetch} = useGetUsersById(id);
+  // const {notice} = useNotify();
+  // useEffect(() => {
+  //   if(dataUser) {
+  //     setData(dataUser)
+  //     notice(null)
+  //   }
+  // }, [dataUser])
+  // useEffect(() => {
+  //   setData(null);
+  //   refetch()
+  // }, [])
     const avatarDefault =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4EqrNcj9a_lNfv2gnqBCgXpM8sKQ5sHWJO0fTYCffMA&s=10";
 
   if (!data && isPending) {
     return <UsersViewLoading/>;
-  } else if (data && !isPending && dataUser) {
+  } else if (data && !isPending) {
     return (
       <div className="view-modal">
         <img className="view-modal__img" src={data?.avatar ||avatarDefault } alt="" />
@@ -61,9 +61,11 @@ const UsersViewModal = () => {
         </div>
       </div>
     );
-  } else if(!data && !dataUser) {
-    return <NotFound text={"Could not find the user!"} status={404} />;
-  }else{
+  }
+  //  else if(!data && !dataUser) {
+  //   return <NotFound text={"Could not find the user!"} status={404} />;
+  // }
+  else{
      return <UsersViewLoading/>;
   }
 };
