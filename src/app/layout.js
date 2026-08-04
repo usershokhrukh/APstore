@@ -32,7 +32,6 @@ export default async function RootLayout({children}) {
           <ModalGuard>
             <StatusGuard>
               <Suspense>
-
               <AppLayout>{children}</AppLayout>
               </Suspense>
             </StatusGuard>

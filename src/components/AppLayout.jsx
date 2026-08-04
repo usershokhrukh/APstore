@@ -1,12 +1,12 @@
 "use client";
-import React from "react";
-import "../app/page.modules.scss"
-import { usePathname } from "next/navigation";
+import React, {Suspense} from "react";
+import "../app/page.modules.scss";
+import {usePathname} from "next/navigation";
 import Sidebar from "@/components/sidebar/Sidebar";
 import Header from "@/components/header/Header";
-import "../app/page.modules.scss"
+import "../app/page.modules.scss";
 
-export default function AppLayout({ children}) {
+export default function AppLayout({children}) {
   const pathname = usePathname();
   const isLoginPage = pathname === "/login";
 
@@ -19,7 +19,7 @@ export default function AppLayout({ children}) {
       <Sidebar />
       <main className="page__main">
         <Header />
-        {children}
+        <Suspense  fallback={<div>Loading...</div>}>{children}</Suspense>
       </main>
     </div>
   );

@@ -23,7 +23,6 @@ const GlobalModal = ({comp, setClose}) => {
         {comp}
         <span
           onClick={() => {
-            // route.push(pathname, {scroll: false});
             clearSearch();
             setClose(false);
           }}
