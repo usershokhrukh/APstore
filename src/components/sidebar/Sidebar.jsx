@@ -99,9 +99,6 @@ const Sidebar = () => {
                   Create
                 </Link>
                 <Link className="sidebar__link" href="">
-                  Delete
-                </Link>
-                <Link className="sidebar__link" href="">
                   View
                 </Link>
                 <Link className="sidebar__link" href="">

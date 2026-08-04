@@ -1,11 +1,16 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./products.modules.scss";
-import { useGetProducts } from "@/hooks/products/GetProducts";
+import {
+  useGetProducts,
+  useDeleteProducts,
+} from "@/hooks/products/GetProducts";
 import { useStatus } from "@/hooks/useStatus";
 const page = () => {
   const { processStatus } = useStatus();
   const { data: products, isLoading, isError, error } = useGetProducts();
+  const { mutate: deleteProduct } = useDeleteProducts();
+  const [value, setValue] = useState("");
   useEffect(() => {
     if (isLoading) {
       processStatus("Loading...", "pending");
@@ -15,9 +20,57 @@ const page = () => {
       processStatus("Success!", "fulfilled");
     }
   }, [isLoading, isError, products?.length]);
-
+  const handleDelete = (id) => {
+    if (window.confirm("Rostdan ham ushbu mahsulotni o'chirmoqchimisiz?")) {
+      deleteProduct(id, {
+        onSuccess: () => {
+          processStatus("Success!", "fulfilled");
+        },
+        onError: (err) => {
+          processStatus(err?.message || "O'chirishda xatolik bo'ldi", "reject");
+        },
+      });
+    }
+  };
   return (
     <div className="product">
+      <div className="product__header">
+        <div className="search__container">
+          <input
+            type="text"
+            placeholder="Search"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            className="search-input"
+          />
+
+          {value ? (
+            <span
+              className="search-icon clear-icon"
+              onClick={() => setValue("")}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M21.7782 4H18.9411L14.4519 8.37097C13.7983 9.00497 12.9175 9.36038 11.9998 9.36038C11.0822 9.36038 10.2014 9.00497 9.54783 8.37097L5.06209 4H2.22266L8.12927 9.75399C10.269 11.8366 13.7357 11.8366 15.8739 9.75399L21.7782 4ZM2.22266 20H5.05095L9.55942 15.6151C10.2105 14.9842 11.088 14.6305 12.0021 14.6305C12.9163 14.6305 13.7938 14.9842 14.4449 15.6151L18.9518 20H21.7782L15.8581 14.2388C13.7264 12.1663 10.2729 12.1663 8.14279 14.2388L2.22266 20Z"></path>
+              </svg>
+            </span>
+          ) : (
+            <span className="search-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z"></path>
+              </svg>
+            </span>
+          )}
+        </div>
+        <button className="product__add">Add Product</button>
+      </div>
       <table className="product__table">
         <thead>
           <tr>
@@ -33,7 +86,7 @@ const page = () => {
         </thead>
         <tbody>
           {products?.length > 0 ? (
-            products.map((product,index) => (
+            products.map((product, index) => (
               <tr key={product.id}>
                 <td>{index + 1}</td>
                 <td>
@@ -56,10 +109,29 @@ const page = () => {
                 <td>{product.stock} ta</td>
                 <td className="product__block">
                   <button className="product__edit" onClick={() => {}}>
-                    Edit
+                    <span className="product__span">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <path d="M6.41421 15.89L16.5563 5.74785L15.1421 4.33363L5 14.4758V15.89H6.41421ZM7.24264 17.89H3V13.6473L14.435 2.21231C14.8256 1.82179 15.4587 1.82179 15.8492 2.21231L18.6777 5.04074C19.0682 5.43126 19.0682 6.06443 18.6777 6.45495L7.24264 17.89ZM3 19.89H21V21.89H3V19.89Z"></path>
+                      </svg>
+                    </span>
                   </button>
-                  <button className="product__delete" onClick={() => {}}>
-                    Delete
+                  <button
+                    className="product__delete"
+                    onClick={() => handleDelete(product.id)}
+                  >
+                    <span className="product__span">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <path d="M4 8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8ZM6 10V20H18V10H6ZM9 12H11V18H9V12ZM13 12H15V18H13V12ZM7 5V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V5H22V7H2V5H7ZM9 4V5H15V4H9Z"></path>
+                      </svg>
+                    </span>
                   </button>
                 </td>
               </tr>

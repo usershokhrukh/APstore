@@ -1,28 +1,22 @@
 @use "../../style/mixin.scss" as *;
 @use "../../style/var.scss" as *;
 .header {
-  width: 100%;
+  width: 95%;
+  margin: auto;
   height: 80px;
-  padding: 20px 50px;
-  &__svg {
-    position: absolute;
-    width: 20px;
-    top: 6px;
-    left: 155px;
-    color: #939598;
-  }
-  &__svg2 {
-    color: black;
-  }
-  &__search {
-    padding-left: 10px;
-    padding-bottom: 2px;
-    height: 35px;
-    border-radius: 5px;
-    border: #ccd1dc solid 2px;
-    background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0px;
+  &__title{
+    @include inter();
+    font-weight: 600;
+    font-size: 28px;
+    color: var(--text-main);
+    margin-bottom: 10px;
   }
   &__status {
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     gap: 8px;

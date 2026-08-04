@@ -1,6 +1,6 @@
 // hooks/useProducts.js
-import {useQuery} from "@tanstack/react-query";
-import {api} from "@/utils/api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { api } from "@/utils/api";
 import axios from "axios";
 
 export function useGetProducts() {
@@ -10,6 +10,18 @@ export function useGetProducts() {
       const api_key = process.env.NEXT_PUBLIC_API_KEY;
       const res = await axios.get(`${api_key}/api/v1/products`);
       return res.data?.items || [];
+    },
+  });
+}
+export function useDeleteProducts() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id) => {
+      const res = await api.delete(`/api/v1/products/${id}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
     },
   });
 }
