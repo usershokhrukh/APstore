@@ -10,7 +10,7 @@ const UsersViewModal = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("user_view");
   const [data, setData] = useState(null);
-  const {data: dataUser, isPending} = useGetUsersById(id);
+  const {data: dataUser, isPending, refetch} = useGetUsersById(id);
   const {notice} = useNotify();
   useEffect(() => {
     if(dataUser) {
@@ -20,6 +20,7 @@ const UsersViewModal = () => {
   }, [dataUser])
   useEffect(() => {
     setData(null);
+    refetch()
   }, [])
     const avatarDefault =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4EqrNcj9a_lNfv2gnqBCgXpM8sKQ5sHWJO0fTYCffMA&s=10";
