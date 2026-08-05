@@ -2,10 +2,10 @@
 @use "../../style/var.scss" as *;
 .header {
   width: 95%;
-  margin: auto;
+  // margin: auto;
   height: 80px;
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: space-between;
   padding: 20px 0px;
   &__title{
