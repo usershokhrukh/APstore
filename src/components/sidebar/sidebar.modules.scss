@@ -135,11 +135,13 @@
     }
   }
   &__link {
+    @include inter();
     color: var(--cards-pop);
     display: block;
     padding: 5px;
     border-radius: 5px;
     transition: all 0.3s ease;
+    font-size: 14px;
     &:hover {
       color: black;
       background-color: #edf2f7;

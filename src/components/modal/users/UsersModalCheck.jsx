@@ -1,3 +1,4 @@
+"use client"
 import NotFound from "@/components/not-found/NotFound";
 import {useSearchParams} from "next/navigation";
 import React from "react";

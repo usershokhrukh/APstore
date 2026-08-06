@@ -1,9 +1,7 @@
 import {api} from "@/utils/api";
 import {useQuery} from "@tanstack/react-query";
 
-const fetchUserData = async (payload) => {
-  console.log(payload);
-  
+const fetchUserData = async (payload) => {  
   const res = await api.get(`api/v1/users${payload}`)
   return res?.data;
 }

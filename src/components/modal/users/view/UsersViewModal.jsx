@@ -1,3 +1,5 @@
+"use client"
+
 import {useGetUsersById} from "@/hooks/users/GetUsersById";
 import {useSearchParams} from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -9,19 +11,7 @@ import UsersViewLoading from "./UsersViewLoading";
 const UsersViewModal = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("user_view");
-  // const [data, setData] = useState(null);
   const {data, isPending, refetch} = useGetUsersById(id);
-  // const {notice} = useNotify();
-  // useEffect(() => {
-  //   if(dataUser) {
-  //     setData(dataUser)
-  //     notice(null)
-  //   }
-  // }, [dataUser])
-  // useEffect(() => {
-  //   setData(null);
-  //   refetch()
-  // }, [])
     const avatarDefault =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4EqrNcj9a_lNfv2gnqBCgXpM8sKQ5sHWJO0fTYCffMA&s=10";
 

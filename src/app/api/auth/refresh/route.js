@@ -6,6 +6,8 @@ export async function POST() {
   const currentRefreshToken = cookieStore.get("refresh_token")?.value;  
 
   if (!currentRefreshToken) {
+    cookieStore.delete("access_token", {path: "/"});
+    cookieStore.delete("refresh_token", {path: "/api/auth/refresh"});
     return Response.json({error: "Session non-existent"}, {status: 401});
   }
 
