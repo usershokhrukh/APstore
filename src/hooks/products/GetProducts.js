@@ -4,7 +4,7 @@ export function useGetProducts(page = 1) {
   return useQuery({
     queryKey: ["products", page],
     queryFn: async () => {
-      const res = await api.get(`/api/v1/products?page=${page}`);
+      const res = await api.get(`/api/v1/products${page}`);
       return res.data || [];
     },
   });
