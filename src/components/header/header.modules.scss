@@ -1,29 +1,43 @@
 @use "../../style/mixin.scss" as *;
-.header{
-  background-color: #f8f9fa;
-  width: 100%;
-  border-bottom: 1px solid #ccd1dc;
+@use "../../style/var.scss" as *;
+.header {
+  width: 95%;
+  // margin: auto;
   height: 80px;
-  padding: 20px 50px;
-  &__div{
-    position: relative;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  padding: 20px 0px;
+  &__title{
+    @include inter();
+    font-weight: 600;
+    font-size: 28px;
+    color: var(--text-main);
+    margin-bottom: 10px;
   }
-  &__svg{
-    position: absolute;
-    width: 20px;
-    top: 6px;
-    left: 155px;
-    color: #939598;
+  &__status {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
-  &__svg2{
-    color: black;
+
+  &__dot {
+    margin-top: 5px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
   }
-  &__search{
-    padding-left: 10px;
-    padding-bottom: 2px;
-    height: 35px;
-    border-radius: 5px;
-    border: #ccd1dc solid 2px;
-    background-color: #fff;
+
+  &__dot--pending {
+    background: orange;
+  }
+
+  &__dot--fulfilled {
+    background: green;
+  }
+
+  &__dot--rejected {
+    background: red;
   }
 }

@@ -1,5 +1,5 @@
 "use client";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "./login.modules.scss";
 import Image from "next/image";
 import {PostLogin} from "@/hooks/login/PostLogin";
@@ -25,10 +25,20 @@ const LoginForm = () => {
     });
   };
 
+  const inputUsername = useRef(null);
+  const inputPassword = useRef(null);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!input.password || !input.password) {
+    if (!input.password && !input.username) {
       return notice("Fill all inputs", "error", 2000, false);
+    }
+    if (!input.password && input.username) {
+      inputPassword?.current?.focus();
+      return notice("Filling password is necessary!", "info", 2000, false);
+    } else if (input.password && !input.username) {
+      inputUsername?.current?.focus();
+      return notice("Filling username is necessary!", "info", 2000, false);
     }
     notice("Pending...", "info", "infinite", false);
     mutate(input);
@@ -42,6 +52,7 @@ const LoginForm = () => {
 
   const handleTokens = async ({accessToken, refreshToken}) => {
     try {
+      notice("Page loading...", "info", "infinite", false)
       const cookieResponse = await axios.post("/api/auth/login", {
         accessToken,
         refreshToken,
@@ -49,9 +60,14 @@ const LoginForm = () => {
       });
       const cookieActive = await axios.post("/api/cookieactive");
       if (cookieResponse?.data?.success && cookieActive?.data?.success) {
-        router.replace("/");
-      }else {
-        notice(`${cookieResponse?.data?.error} & ${cookieActive?.data?.error}`, "error", "infinite", true)
+        router.refresh();
+      } else {
+        notice(
+          `${cookieResponse?.data?.error} & ${cookieActive?.data?.error}`,
+          "error",
+          "infinite",
+          true,
+        );
       }
     } catch (error) {}
   };
@@ -59,7 +75,7 @@ const LoginForm = () => {
   useEffect(() => {
     if (data) {
       if (data?.data?.user?.role === "admin") {
-        notice("Admin has found!", "success", "infinite", true);
+        notice("Admin has found!", "success", 2000, true);
         const {accessToken, refreshToken} = data?.data;
         handleTokens({accessToken, refreshToken});
       } else {
@@ -84,6 +100,7 @@ const LoginForm = () => {
         <h1 className="login__title">Login</h1>
         <div className="login__form-box">
           <input
+            ref={inputUsername}
             onChange={handleChange}
             type="text"
             id="username"
@@ -103,6 +120,7 @@ const LoginForm = () => {
         </div>
         <div className="login__form-box">
           <input
+            ref={inputPassword}
             onChange={handleChange}
             type={`${passShow ? "text" : "password"}`}
             id="password"

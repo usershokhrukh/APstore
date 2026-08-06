@@ -1,8 +1,11 @@
-import React from "react";
+import React, { Suspense } from "react";
 import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.scss";
 import NotificationCustom from "./NotificationCustom";
 import SessionGuard from "./SessionGuard";
+import AppLayout from "@/components/AppLayout";
+import StatusGuard from "./StatusGuard";
+import ModalGuard from "./ModalGuard";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -19,7 +22,6 @@ export const metadata = {
 };
 
 export default async function RootLayout({children}) {
-  
   return (
     <html
       lang="en"
@@ -27,9 +29,15 @@ export default async function RootLayout({children}) {
     >
       <body className="min-h-full flex flex-col">
         <NotificationCustom>
-          {children}
+          <ModalGuard>
+            <StatusGuard>
+              <Suspense>
+              <AppLayout>{children}</AppLayout>
+              </Suspense>
+            </StatusGuard>
+            <SessionGuard />
+          </ModalGuard>
         </NotificationCustom>
-        <SessionGuard/>
       </body>
     </html>
   );

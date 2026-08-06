@@ -13,7 +13,6 @@ const request = async (data) => {
       accessToken: access_token,
       refreshToken: refresh_token,
     });
-
     return res;
   } catch (error) {
     if(axios.isAxiosError(error) && error.response?.data) {

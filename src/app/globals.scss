@@ -83,15 +83,15 @@
   }
 
   &-error {
-    color: red;
+    color: var(--app-red);
   }
 
   &-info {
-    color: orange;
+    color: var(--app-yellow);
   }
 
   &-success {
-    color: green;
+    color: var(--app-green);
   }
 
   &-wrap {
@@ -155,6 +155,38 @@
     color: rgb(54, 54, 54);
     backdrop-filter: blur(1px);
     visibility: visible;
+  }
+}
 
+.container {
+  @include display();
+  align-items: start;
+  width: 100%;
+  margin: auto;
+  max-width: 2000px;
+  // min-height: fit-content;
+  flex-grow: 1;
+}
+
+.loading-box {
+  background-color: rgb(from var(--text-muted) r g b / 0.3);
+  animation-name: loading;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+  height: 40px;
+  width: 300px;
+  border-radius: 10px;
+}
+
+@keyframes loading {
+  0% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.3;
   }
 }
