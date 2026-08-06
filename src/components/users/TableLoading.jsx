@@ -3,7 +3,7 @@ import "./table.modules.scss"
 
 const TableLoading = () => {
   return (
-    <div className='table__loading'></div>
+    <div className='loading-box table__loading'></div>
   )
 }
 

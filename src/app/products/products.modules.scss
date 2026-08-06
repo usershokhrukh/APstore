@@ -3,8 +3,17 @@
 
 .product {
   @include display();
+  @include paddingContainersBig();
   flex-direction: column;
+  align-items: start;
+  gap: 20px;
   width: 100%;
+
+  &__title {
+    @include inter();
+    font-size: 30px;
+    font-weight: 500;
+  }
   &__add {
     background-color: var(--text-muted);
     color: var(--cards-pop);
@@ -29,7 +38,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 95%;
+    width: 100%;
     padding: 10px;
     @include whiteBoxesShadow();
     border-radius: 10px;
@@ -44,7 +53,7 @@
     display: flex;
     align-items: center;
     justify-content: end;
-    width: 90%;
+    width: 100%;
     border-radius: 10px;
     margin: 10px auto;
     &__btn {
@@ -72,7 +81,7 @@
     border-radius: 20px;
     margin: 0 auto;
     @include whiteBoxesShadow();
-    width: 95%;
+    width: 100%;
     border-collapse: separate;
     border-spacing: 0 8px;
     @include inter();

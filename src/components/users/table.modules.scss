@@ -344,10 +344,6 @@
   &__loading {
     width: 100%;
     height: 50px;
-    animation-name: load-table;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-    border-radius: 10px;
   }
   &__show-select {
     animation-name: show-select;
@@ -386,18 +382,6 @@
   }
   100% {
     transform: scale(1);
-  }
-}
-
-@keyframes load-table {
-  0% {
-    background-color: rgb(from var(--text-muted) r g b / 0.1);
-  }
-  50% {
-    background-color: rgb(from var(--text-muted) r g b / 0.3);
-  }
-  100% {
-    background-color: rgb(from var(--text-muted) r g b / 0.1);
   }
 }
 
