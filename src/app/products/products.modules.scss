@@ -141,6 +141,7 @@
     }
   }
   &__edit,
+  &__view,
   &__delete {
     background-color: var(--cards-pop);
     min-width: 35px;
@@ -163,8 +164,7 @@
   }
   &__block {
     gap: 5px;
-    display: flex;
-    flex-direction: column;
+      display: flex;
     justify-content: space-around;
     align-items: center;
     width: 100%;
@@ -213,3 +213,251 @@
     }
   }
 }
+.product__view-modal {
+  @include display();
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding: 24px 20px;
+
+  h2 {
+    @include inter();
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-main, #333);
+    text-align: center;
+    margin: 0;
+  }
+}
+
+.product__view-div {
+  @include display();
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.product__view-block {
+  @include display();
+  justify-content: center;
+  width: 100%;
+
+  .product__view-img {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.product__view-word {
+  @include display();
+  padding-top: 10px;
+  flex-direction: column;
+  align-items: start;
+  width: 90%;
+  border-top: 1px solid var(--app-yellow);
+  gap: 10px;
+}
+
+.product__view-p {
+  @include inter();
+  font-size: 15px;
+  color: var(--text-muted, #555);
+}
+.product__view-span {
+  color: var(--text-main, #222);
+  font-weight: 600;
+  margin-right: 10px;
+}
+.product__edit-modal {
+  @include display();
+
+  flex-direction: column;
+
+  gap: 20px;
+
+  width: 300px;
+
+  padding: 20px;
+}
+
+.product__edit-form {
+  @include display();
+
+  flex-direction: column;
+
+  gap: 14px;
+
+  width: 100%;
+}
+
+.product__edit-inp {
+  width: 100%;
+
+  padding: 10px 14px;
+
+  border-radius: 8px;
+
+  border: 1px solid var(--app-yellow, #e2e8f0);
+
+  background-color: transparent;
+
+  color: var(--text-main, #333);
+
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  @include inter();
+
+  &:focus {
+    border-color: var(--text-main, #333);
+  }
+
+  &::placeholder {
+    color: var(--text-muted, #94a3b8);
+  }
+}
+
+.product__edit-action {
+  @include display();
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  width: 100%;
+
+  margin-top: 8px;
+}
+
+.product__edit-btn {
+  padding: 8px 18px;
+
+  border-radius: 6px;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  border: none;
+
+  transition: all 0.2s ease;
+
+  @include inter();
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
+.cancel {
+  background-color: var(--text-muted);
+
+  color: var(--cards-pop);
+}
+
+.submit {
+  background-color: var(--text-muted);
+
+  color: var(--cards-pop);
+}
+
+.product__create-modal {
+  @include display();
+  flex-direction: column;
+  gap: 20px;
+  width: 300px;
+  padding: 20px;
+}
+
+.product__create-form {
+  @include display();
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.product__create-inp {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--app-yellow, #e2e8f0);
+  background-color: transparent;
+  color: var(--text-main, #333);
+  font-size: 14px;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  @include inter();
+
+  &:focus {
+    border-color: var(--text-main, #333);
+  }
+
+  &::placeholder {
+    color: var(--text-muted, #94a3b8);
+  }
+}
+
+select.product__create-inp {
+  option {
+    background-color: var(--card-pop);
+    color: var(--text-color);
+    padding: 10px;
+    &:checked,
+    &:hover,
+    &:focus {
+      background-color: var(--card-pop);
+      color: var(--text-muted) ;
+    }
+  }
+}
+
+.product__create-action {
+  @include display();
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.product__create-btn {
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  transition: all 0.2s ease;
+  @include inter();
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+.cancel {
+  background-color: var(--text-muted);
+  color: var(--cards-pop);
+}
+
+.submit {
+  background-color: var(--text-muted);
+  color: var(--cards-pop);
+  }
