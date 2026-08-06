@@ -1,6 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./products.modules.scss";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { ModalContext } from "@/context/ModalContext";
+import ProductsModalCheck from "@/components/modal/products/ProductsModalCheck";
 import {
   useGetProducts,
   useDeleteProducts,
@@ -8,29 +12,54 @@ import {
 import { useStatus } from "@/hooks/useStatus";
 const page = () => {
   const { processStatus } = useStatus();
-  const { data: products, isLoading, isError, error } = useGetProducts();
+  const [page, setPage] = useState(1);
+  const { data: products, isLoading, isError, error } = useGetProducts(page);
   const { mutate: deleteProduct } = useDeleteProducts();
   const [value, setValue] = useState("");
+  const { setComp, setClose } = useContext(ModalContext);
+  const searchParams = useSearchParams();
+  const [key, setKey] = useState(null);
+  const openModal = (paramKey, id) => {
+    if (!paramKey || !id) {
+      return processStatus("Something went wrong!", "reject");
+    }
+    setKey(paramKey);
+    setComp(<ProductsModalCheck />);
+  };
+  useEffect(() => {
+    if (searchParams.size > 0 && key) {
+      if (searchParams.get(key)) {
+        setClose(true);
+      } else {
+        processStatus("Could not get data!", "reject");
+      }
+      setKey(null);
+    }
+  }, [searchParams, key, setClose]);
   useEffect(() => {
     if (isLoading) {
       processStatus("Loading...", "pending");
     } else if (isError) {
-      processStatus(error?.message, "reject");
-    } else if (products && products?.length > 0) {
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Avtorizatsiyadan o'tilmagan (401)";
+
+      processStatus(errorMessage, "reject");
+    } else if (products && products?.items?.length > 0) {
       processStatus("Success!", "fulfilled");
     }
-  }, [isLoading, isError, products?.length]);
+  }, [isLoading, isError, error, products?.items?.length]);
+  console.log(page);
   const handleDelete = (id) => {
-    if (window.confirm("Rostdan ham ushbu mahsulotni o'chirmoqchimisiz?")) {
-      deleteProduct(id, {
-        onSuccess: () => {
-          processStatus("Success!", "fulfilled");
-        },
-        onError: (err) => {
-          processStatus(err?.message || "O'chirishda xatolik bo'ldi", "reject");
-        },
-      });
-    }
+    deleteProduct(id, {
+      onSuccess: () => {
+        processStatus("Success!", "fulfilled");
+      },
+      onError: (err) => {
+        processStatus(err?.message || "O'chirishda xatolik bo'ldi", "reject");
+      },
+    });
   };
   return (
     <div className="product">
@@ -69,7 +98,17 @@ const page = () => {
             </span>
           )}
         </div>
-        <button className="product__add">Add Product</button>
+        <Link
+          href={{
+            pathname: "/products",
+            query: { product_create: "true" },
+          }}
+          scroll={false}
+          className="product__add"
+          onClick={() => openModal("product_create", "true")}
+        >
+          Add Product
+        </Link>
       </div>
       <table className="product__table">
         <thead>
@@ -85,8 +124,8 @@ const page = () => {
           </tr>
         </thead>
         <tbody>
-          {products?.length > 0 ? (
-            products.map((product, index) => (
+          {products?.items.length > 0 ? (
+            products.items.map((product, index) => (
               <tr key={product.id}>
                 <td>{index + 1}</td>
                 <td>
@@ -108,7 +147,15 @@ const page = () => {
                 <td>${product.price}</td>
                 <td>{product.stock} ta</td>
                 <td className="product__block">
-                  <button className="product__edit" onClick={() => {}}>
+                  <Link
+                    href={{
+                      pathname: "/products",
+                      query: { product_edit: product.id },
+                    }}
+                    scroll={false}
+                    className="product__edit"
+                    onClick={() => openModal("product_edit", product.id)}
+                  >
                     <span className="product__span">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -118,7 +165,7 @@ const page = () => {
                         <path d="M6.41421 15.89L16.5563 5.74785L15.1421 4.33363L5 14.4758V15.89H6.41421ZM7.24264 17.89H3V13.6473L14.435 2.21231C14.8256 1.82179 15.4587 1.82179 15.8492 2.21231L18.6777 5.04074C19.0682 5.43126 19.0682 6.06443 18.6777 6.45495L7.24264 17.89ZM3 19.89H21V21.89H3V19.89Z"></path>
                       </svg>
                     </span>
-                  </button>
+                  </Link>
                   <button
                     className="product__delete"
                     onClick={() => handleDelete(product.id)}
@@ -143,8 +190,28 @@ const page = () => {
           )}
         </tbody>
       </table>
+      <div className="product__pagination">
+        <button
+          className="product__pagination__btn"
+          onClick={() => setPage((prev) => prev - 1)}
+          disabled={!products?.meta?.hasPrevPage}
+        >
+          Previous
+        </button>
+        <span className="product__pagination__info">
+          {products?.meta?.page || 1} / {products?.meta?.totalPages || 1}
+        </span>
+        <button
+          className="product__pagination__btn"
+          onClick={() => setPage((prev) => prev + 1)}
+          disabled={!products?.meta?.hasNextPage}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };
 
 export default page;
+// edit create view  modallar va pagination

@@ -1,15 +1,13 @@
 // hooks/useProducts.js
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/utils/api";
-import axios from "axios";
 
-export function useGetProducts() {
+export function useGetProducts(page = 1) {
   return useQuery({
-    queryKey: ["products"],
+    queryKey: ["products", page],
     queryFn: async () => {
-      const api_key = process.env.NEXT_PUBLIC_API_KEY;
-      const res = await axios.get(`${api_key}/api/v1/products`);
-      return res.data?.items || [];
+      const res = await api.get(`/api/v1/products?page=${page}`);
+      return res.data || [];
     },
   });
 }
