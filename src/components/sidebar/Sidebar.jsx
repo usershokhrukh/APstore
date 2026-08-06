@@ -1,17 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
+import React, {useState} from "react";
 import "./sidebar.modules.scss";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import {useRouter} from "next/navigation";
 import axios from "axios";
 import logo from "../../../public/images/sidebar/logo.png";
-import { useNotify } from "@/hooks/useNotify";
+import {useNotify} from "@/hooks/useNotify";
 const Sidebar = () => {
   const [drop, setDrop] = useState(false);
+  const [dropCategory, setDropCategory] = useState(false);
   const router = useRouter();
-  const { notice } = useNotify();
+  const {notice} = useNotify();
   const LogOut = async () => {
     await axios.post("/api/auth/logout");
     notice("Successfully logged out!", "success", 2000, false);
@@ -51,7 +52,7 @@ const Sidebar = () => {
           <div className="sidebar__dropdown">
             <button
               className="sidebar__btn sidebar__drop-btn"
-              style={drop ? { color: "black", backgroundColor: "#fff" } : null}
+              style={drop ? {color: "black", backgroundColor: "#fff"} : null}
               onClick={() => {
                 setDrop(!drop);
                 router.replace(`/products`);
@@ -64,9 +65,8 @@ const Sidebar = () => {
                   viewBox="0 0 24 24"
                   fill="currentColor"
                 >
-                  <path d="M21 11.6458V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V11.6458C2.37764 10.9407 2 10.0144 2 9V3C2 2.44772 2.44772 2 3 2H21C21.5523 2 22 2.44772 22 3V9C22 10.0144 21.6224 10.9407 21 11.6458ZM19 12.874C18.6804 12.9562 18.3453 13 18 13C16.8053 13 15.7329 12.4762 15 11.6458C14.2671 12.4762 13.1947 13 12 13C10.8053 13 9.73294 12.4762 9 11.6458C8.26706 12.4762 7.19469 13 6 13C5.6547 13 5.31962 12.9562 5 12.874V20H19V12.874ZM14 9C14 8.44772 14.4477 8 15 8C15.5523 8 16 8.44772 16 9C16 10.1046 16.8954 11 18 11C19.1046 11 20 10.1046 20 9V4H4V9C4 10.1046 4.89543 11 6 11C7.10457 11 8 10.1046 8 9C8 8.44772 8.44772 8 9 8C9.55228 8 10 8.44772 10 9C10 10.1046 10.8954 11 12 11C13.1046 11 14 10.1046 14 9Z"></path>
+                  <path d="M4.5 7.65311V16.3469L12 20.689L19.5 16.3469V7.65311L12 3.311L4.5 7.65311ZM12 1L21.5 6.5V17.5L12 23L2.5 17.5V6.5L12 1ZM6.49896 9.97065L11 12.5765V17.625H13V12.5765L17.501 9.97066L16.499 8.2398L12 10.8445L7.50104 8.2398L6.49896 9.97065Z"></path>
                 </svg>
-                {/* </span> */}
                 <span>Products</span>
               </span>
               {!drop ? (
@@ -94,6 +94,66 @@ const Sidebar = () => {
               )}
             </button>
             {drop ? (
+              <div className="sidebar__drop">
+                <Link className="sidebar__link" href="">
+                  Create
+                </Link>
+                <Link className="sidebar__link" href="">
+                  View
+                </Link>
+                <Link className="sidebar__link" href="">
+                  Edit
+                </Link>
+              </div>
+            ) : null}
+          </div>
+          <div className="sidebar__dropdown">
+            <button
+              className="sidebar__btn sidebar__drop-btn"
+              style={
+                dropCategory ? {color: "black", backgroundColor: "#fff"} : null
+              }
+              onClick={() => {
+                setDropCategory(!dropCategory);
+                router.replace(`/categories`);
+              }}
+            >
+              <span className="sidebar__btn-box">
+                <svg
+                  className="sidebar__icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M3 4C3 3.44772 3.44772 3 4 3H10C10.5523 3 11 3.44772 11 4V10C11 10.5523 10.5523 11 10 11H4C3.44772 11 3 10.5523 3 10V4ZM3 14C3 13.4477 3.44772 13 4 13H10C10.5523 13 11 13.4477 11 14V20C11 20.5523 10.5523 21 10 21H4C3.44772 21 3 20.5523 3 20V14ZM13 4C13 3.44772 13.4477 3 14 3H20C20.5523 3 21 3.44772 21 4V10C21 10.5523 20.5523 11 20 11H14C13.4477 11 13 10.5523 13 10V4ZM13 14C13 13.4477 13.4477 13 14 13H20C20.5523 13 21 13.4477 21 14V20C21 20.5523 20.5523 21 20 21H14C13.4477 21 13 20.5523 13 20V14ZM15 5V9H19V5H15ZM15 15V19H19V15H15ZM5 5V9H9V5H5ZM5 15V19H9V15H5Z"></path>
+                </svg>
+                <span>Categories</span>
+              </span>
+              {!dropCategory ? (
+                <span className="sidebar__span">
+                  <svg
+                    width={25}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M11.9999 10.8284L7.0502 15.7782L5.63599 14.364L11.9999 8L18.3639 14.364L16.9497 15.7782L11.9999 10.8284Z"></path>
+                  </svg>
+                </span>
+              ) : (
+                <span className="sidebar__span">
+                  <svg
+                    width={25}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M11.9999 13.1714L16.9497 8.22168L18.3639 9.63589L11.9999 15.9999L5.63599 9.63589L7.0502 8.22168L11.9999 13.1714Z"></path>
+                  </svg>
+                </span>
+              )}
+            </button>
+            {dropCategory ? (
               <div className="sidebar__drop">
                 <Link className="sidebar__link" href="">
                   Create
