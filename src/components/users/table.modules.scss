@@ -4,6 +4,180 @@
 .table {
   @include display();
   width: 100%;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+
+  &__top {
+    @include display();
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  &__t-left {
+    @include display();
+    gap: 10px;
+  }
+
+  &__t-select-box {
+    @include display();
+    position: relative;
+    flex-direction: column;
+    gap: 5px;
+    color: var(--text-main);
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover .table__t-select-span {
+        transform: translateY(1px);
+      }
+    }
+  }
+
+  &__t-select-number {
+    max-width: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__t-select-span {
+    width: 20px;
+    height: 20px;
+    color: var(--text-muted);
+    transition: all 0.1s linear;
+  }
+
+  &__t-select {
+    @include inter();
+    @include display();
+    font-size: 14px;
+    outline: none;
+    padding: 8px 15px;
+    border: 1px solid rgb(from var(--text-muted) r g b / 0.3);
+    border-radius: 10px;
+    height: 40px;
+    gap: 10px;
+  }
+
+  &__t-option-box {
+    @include display();
+    position: absolute;
+    top: 45px;
+    flex-direction: column;
+    width: 100%;
+    border: 1px solid rgb(from var(--text-muted) r g b / 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: white;
+    visibility: hidden;
+  }
+
+  &__t-option {
+    @include display();
+    width: 100%;
+    padding: 5px;
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--cards-pop);
+      }
+    }
+
+    &:active {
+      background-color: var(--cards-pop);
+    }
+  }
+
+  &__t-search {
+    // @include whiteBoxesShadow();
+    @include inter();
+    font-size: 14px;
+    padding: 8px 15px;
+    flex-grow: 1;
+    max-width: 300px;
+    border: 1px solid rgb(from var(--text-muted) r g b / 0.3);
+    border-radius: 10px;
+    outline: none;
+    height: 40px;
+  }
+
+  &__t-pagination {
+    @include display();
+    @include inter();
+    font-size: 14px;
+    gap: 10px;
+    color: var(--text-main);
+  }
+
+  &__tpag-left-right {
+    @include display();
+    height: 40px;
+    gap: 5px;
+    border: 1px solid rgb(from var(--text-muted) r g b / 0.3);
+    border-radius: 10px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  &__tpag-left {
+    padding: 8px 10px 8px 3px;
+  }
+
+  &__tpag-right {
+    padding: 8px 3px 8px 10px;
+  }
+
+  &__tpag-center {
+    @include display();
+    gap: 10px;
+  }
+
+  &__t-pag-nbers,
+  &__t-pag-nbers-dot {
+    @include display();
+    height: 30px;
+    min-width: 20px;
+    padding: 3px 8px;
+    border-radius: 5px;
+  }
+
+  &__t-pag-nbers {
+    border: 1px solid rgb(from var(--text-muted) r g b / 0.3);
+    cursor: pointer;
+    outline: none;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--app-blue);
+        border: 1px solid transparent;
+        color: var(--app-white);
+      }
+    }
+
+    &:active {
+      background-color: var(--app-blue);
+      border: 1px solid transparent;
+      color: var(--app-white);
+    }
+  }
+
+  &__t-pag-active {
+    background-color: var(--app-blue);
+    border: 1px solid transparent;
+    color: var(--app-white);
+  }
+
+  &__tpag-btnspan {
+    width: 20px;
+    height: 20px;
+  }
   &__main {
     @include display();
     @include whiteBoxesShadow();
@@ -57,7 +231,7 @@
   }
 
   &__body-r-animate {
-    animation: table-row-animate 0.3s linear
+    animation: table-row-animate 0.3s linear;
   }
 
   &__head-rth-min-width,
@@ -109,7 +283,7 @@
   }
 
   &__body-img {
-    width: 30px; 
+    width: 30px;
     height: 30px;
 
     border-radius: 50px;
@@ -143,7 +317,7 @@
     font-size: 14px;
     border: 1px solid transparent;
     border-radius: 50px;
-    
+
     &-active {
       background-color: rgb(from var(--app-green) r g b / 0.2);
       color: var(--app-green);
@@ -165,30 +339,70 @@
   &__loading {
     width: 100%;
     height: 50px;
-    background-color: var(--text-muted);
-    opacity: 0.2;
-    animation: load 1s infinite forwards;
-    border-radius: 20px;
+    animation-name: load-table;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    border-radius: 10px;
+  }
+  &__show-select {
+    animation-name: show-select;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+  }
+
+  &__tpag-block {
+    cursor: not-allowed;
+    opacity: 0.3;
+  }
+
+  &__tpag-media {
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--app-blue);
+        border: 1px solid transparent;
+        color: var(--app-white);
+      }
+    }
+
+    &:active {
+      background-color: var(--app-blue);
+      border: 1px solid transparent;
+      color: var(--app-white);
+    }
   }
 }
-
 
 @keyframes table-row-animate {
-  0%{
+  0% {
     transform: scale(1);
-  }50%{
+  }
+  50% {
     transform: scale(1.01);
-  }100%{
+  }
+  100% {
     transform: scale(1);
   }
 }
 
-@keyframes load {
-  0%{
-    opacity: 0.2;
-  }50%{
-    opacity: 0.1;
-  }100%{
-    opacity: 0.2;
+@keyframes load-table {
+  0% {
+    background-color: rgb(from var(--text-muted) r g b / 0.1);
+  }
+  50% {
+    background-color: rgb(from var(--text-muted) r g b / 0.3);
+  }
+  100% {
+    background-color: rgb(from var(--text-muted) r g b / 0.1);
+  }
+}
+
+@keyframes show-select {
+  0% {
+    transform: translateY(-10px);
+    visibility: hidden;
+  }
+  100% {
+    transform: translateY(0px);
+    visibility: visible;
   }
 }

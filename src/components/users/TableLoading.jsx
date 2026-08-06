@@ -1,4 +1,5 @@
 import React from 'react'
+import "./table.modules.scss"
 
 const TableLoading = () => {
   return (

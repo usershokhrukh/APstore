@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import "./notfound.modules.scss";
 const NotFound = ({text, status}) => {
