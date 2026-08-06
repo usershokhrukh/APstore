@@ -159,9 +159,6 @@ const Sidebar = () => {
                   Create
                 </Link>
                 <Link className="sidebar__link" href="">
-                  View
-                </Link>
-                <Link className="sidebar__link" href="">
                   Edit
                 </Link>
               </div>

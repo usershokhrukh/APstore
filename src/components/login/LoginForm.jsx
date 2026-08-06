@@ -52,6 +52,7 @@ const LoginForm = () => {
 
   const handleTokens = async ({accessToken, refreshToken}) => {
     try {
+      notice("Page loading...", "info", "infinite", false)
       const cookieResponse = await axios.post("/api/auth/login", {
         accessToken,
         refreshToken,
