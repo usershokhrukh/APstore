@@ -1,9 +1,10 @@
 import React from 'react'
-import "./categories.modules.scss"
+import CategoriesPage from '@/components/categories/CategoriesPage'
 
 const Categories = () => {
+  
   return (
-    <div>Categories</div>
+    <><CategoriesPage/></>
   )
 }
 

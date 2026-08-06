@@ -26,6 +26,7 @@ export default function Dashboard() {
   const searchParams = useSearchParams();
   const {setComp, setClose} = useContext(ModalContext);
   useEffect(() => {
+    notice(null)
     if(searchParams.size) {
       setComp(<UsersModalCheck/>)
       setClose(true)
