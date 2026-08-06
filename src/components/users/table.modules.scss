@@ -76,6 +76,7 @@
     overflow: hidden;
     background-color: white;
     visibility: hidden;
+    z-index: 10
   }
 
   &__t-option {
@@ -144,14 +145,18 @@
     @include display();
     height: 30px;
     min-width: 20px;
-    padding: 3px 8px;
     border-radius: 5px;
   }
 
+  &__t-pag-nbers-dot {
+    min-width: 12px !important;
+  }
+  
   &__t-pag-nbers {
     border: 1px solid rgb(from var(--text-muted) r g b / 0.3);
     cursor: pointer;
     outline: none;
+    padding: 3px 8px;
 
     @media (hover: hover) {
       &:hover {
