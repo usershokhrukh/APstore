@@ -8,7 +8,6 @@ import {usePatchCategories} from "@/hooks/categories/PatchCategories";
 import { ModalContext } from "@/context/ModalContext";
 
 const CategoriesModalEdit = ({id}) => {
-  console.log(id);
   const {data, error, isPending} = useGetOneCategory(id);
   const {data: patchData, mutate, isSuccess} = usePatchCategories();
   const {notice} = useNotify();
@@ -32,6 +31,12 @@ const CategoriesModalEdit = ({id}) => {
   }, [data, isPending]);
 
   useEffect(() => {
+    if(error?.message) {
+      notice("Could not resolve! Try again later!", "error", 3000, false)
+    }
+  }, [error])
+
+  useEffect(() => {
     if (data) {
       setInput({
         name: data?.name || "",
@@ -47,8 +52,6 @@ const CategoriesModalEdit = ({id}) => {
       [e.target?.name]: e.target?.value,
     });
   };
-
-  console.log(isSuccess);
 
   useEffect(() => {
     if(patchData && isSuccess) {

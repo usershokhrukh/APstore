@@ -92,6 +92,36 @@
     width: 300px;
     border-radius: 10px;
   }
+
+  &__top {
+    @include display();
+    justify-content: start;
+    width: 100%;
+    gap: 10px;
+  }
+
+  &__top-icon {
+    width: 23px;
+    height: 23px;
+    color: var(--app-red)
+  }
+
+  &__top-text{
+    color: var(--text-main);
+    font-size: 15px;
+  }
+
+  &__delete-button {
+    background-color: rgb(from var(--app-red) r g b / 0.2);
+    color: var(--app-red);
+  }
+
+  &__button-inactive {
+    opacity: 0.4;
+    background-color: rgb(from var(--text-muted) r g b / 0.2);
+    cursor: not-allowed;
+
+  }
 }
 
 @keyframes loading {

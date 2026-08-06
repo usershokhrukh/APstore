@@ -1,10 +1,9 @@
 import {api} from "@/utils/api";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import axios from "axios";
-
-const request = async (payload) => {
+const request = async (id) => {
   try {
-    const res = await api.patch(`/api/v1/categories/${payload[0]}`, payload[1]);
+    const res = await api.delete(`/api/v1/categories/${id}`);
     return res?.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {
@@ -14,7 +13,7 @@ const request = async (payload) => {
   }
 };
 
-export const usePatchCategories = () => {
+export const useDeleteCategories = (id) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: request,
