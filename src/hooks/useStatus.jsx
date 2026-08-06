@@ -1,19 +1,15 @@
-import { StatusContext } from "@/context/StatusContext";
-import React, { useContext } from "react";
-
+import { useState, useCallback } from "react";
 export const useStatus = () => {
-  const context = useContext(StatusContext);
-  const [status, setStatus] = context;
-  const processStatus = (text, type) => {
+  const [status, setStatus] = useState(null);
+
+  const processStatus = useCallback((text, type) => {
     const newStatus = { text, type };
     setStatus(newStatus);
 
     if (typeof window !== "undefined") {
       localStorage.setItem("app_status", JSON.stringify(newStatus));
     }
-  };
-  return {
-    status,
-    processStatus,
-  };
+  }, []);
+
+  return { status, processStatus };
 };

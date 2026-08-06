@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <div className="header">
       <div className="header__path">
-        <p className="header__title">{pathname == "/products"? ("Product"):(null)}</p>
+        <p className="header__title">{pathname == "/products"? ("Product"): pathname=="/"? ("Dashboard"):("Categories")}</p>
       </div>
       <div className="header__status">
         <span >{status.text}</span>

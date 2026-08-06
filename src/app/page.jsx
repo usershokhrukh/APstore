@@ -6,7 +6,7 @@ import Dashboard from "../components/dashboard/page";
 
 const Page = () => {
   return (
-        <Dashboard />
+    <Dashboard />
   );
 };
 
