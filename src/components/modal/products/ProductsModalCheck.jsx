@@ -1,7 +1,10 @@
 "use client";
 import React from "react";
 import { useSearchParams } from "next/navigation";
-import NotFound from "@/components/not-found/NotFound"; 
+import NotFound from "@/components/not-found/NotFound";
+import ProductsCreateModal from "./create/ProductsCreateModal";
+import ProductsEditModal from "./edit/ProductsEditModal";
+import ProductsViewModal from "./view/ProductsViewModal";
 
 const ProductsModalCheck = () => {
   const searchParams = useSearchParams();
@@ -10,16 +13,20 @@ const ProductsModalCheck = () => {
   const isEdit = searchParams.get("product_edit");
   const isCreate = searchParams.get("product_create");
 
-  if (isView) {
-    return <div>Products View Modal (ID: {isView})</div>; 
+  const handleClose = () => {
+    window.location.href = window.location.pathname;
+  };
+
+  if (isCreate === "true") {
+    return <ProductsCreateModal onClose={handleClose} />;
   }
 
   if (isEdit) {
-    return <div>Products Edit Modal (ID: {isEdit})</div>;
+    return <ProductsEditModal id={isEdit} onClose={handleClose} />;
   }
 
-  if (isCreate) {
-    return <div>Products Create Modal</div>;
+  if (isView) {
+    return <ProductsViewModal id={isView} onClose={handleClose} />;
   }
 
   if (searchParams.size === 0) {
