@@ -8,9 +8,13 @@
   &__add {
     background-color: var(--text-muted);
     color: var(--cards-pop);
-    padding: 4px 6px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
     border: 1px solid var(--text-muted);
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
 
     @media (hover: hover) {
